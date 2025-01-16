@@ -11,14 +11,16 @@ use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Http;
+use App\Wix\WixStore;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(Request $request)
     {
-        $categories = Category::all();
-
-        return new CategoryCollection($categories);
+        $collections = WixStore::getWixProducts();
+        return response()->json($collections, 200);
+       
     }
 
     public function show(Request $request, Category $category): Response

@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'wix' => [
+        'client_id' => env('CLIENTID'),
+        'base_url' => env('WIX_API_BASE_URL'),
+    ],
+
+
 ];
