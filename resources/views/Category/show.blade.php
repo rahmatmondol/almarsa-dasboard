@@ -1,7 +1,1 @@
-{{--
-    @extends('layouts.app')
-
-    @section('content')
-        category.show template
-    @endsection
---}}
+<h1>categroy show</h1>

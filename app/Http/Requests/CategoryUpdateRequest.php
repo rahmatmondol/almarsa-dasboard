@@ -21,8 +21,8 @@ class CategoryUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'image' => ['required', 'string'],
-            'parent_id' => ['required', 'integer', 'exists:parents,id'],
+            'description' => ['required', 'string'],
+            'collection_id' => ['required', 'string'],
         ];
     }
 }

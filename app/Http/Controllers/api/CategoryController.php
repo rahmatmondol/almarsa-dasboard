@@ -13,18 +13,41 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use App\Wix\WixStore;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $collections = WixStore::getWixProducts();
+        $collections = Category::all();
         return response()->json($collections, 200);
-       
     }
 
-    public function show(Request $request, Category $category): Response
+    public function show(Request $request, Category $category)
     {
         return new CategoryResource($category);
+    }
+
+    public function update(CategoryUpdateRequest $request, Category $category)
+    {
+        $category->update($request->validated());
+        return new CategoryResource($category);
+    }
+
+    public function destroy(Request $request, Category $category)
+    {
+        $category->delete();
+        return response()->json(null, 204);
+    }
+
+    public function wixCollection(Request $request)
+    {
+        $limit = $request->query('limit', 100) ?: 100;
+        $offset = $request->query('offset', 1) ?: 1;
+
+        $wixStore = new WixStore($limit, $offset);
+        $collections = $wixStore->getWixCollections();
+
+        return response()->json($collections, 200);
     }
 }
