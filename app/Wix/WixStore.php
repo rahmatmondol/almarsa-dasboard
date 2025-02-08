@@ -11,6 +11,7 @@ class WixStore
 {
     public $limit;
     public $offset;
+    public $categoryID;
 
     /**
      * Constructor for the WixStore class
@@ -19,10 +20,11 @@ class WixStore
      * @param int $offset The starting point for item retrieval
      */
 
-    public function __construct($limit, $offset)
+    public function __construct($limit, $offset, $categoryID = null)
     {
         $this->limit = $limit;
         $this->offset = $offset;
+        $this->categoryID = $categoryID;
     }
 
     /**

@@ -15,19 +15,7 @@ Route::group([
 ], function () {
     // categories routes
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::put('categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-    Route::get('categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
-    Route::get('categories/collections', [CategoryController::class, 'collections'])->name('categories.collections');
-
-    // wix store routes
-    Route::get('wix-collection', [CategoryController::class, 'wixCollection'])->name('wix.collection');
-    // Route::get('wix-collection/{collection}', [CategoryController::class, 'wixStore-collection-single'])->name('wix.collection.single');
-    // Route::get('wix-collection/{collection}/products', [CategoryController::class, 'wixStore-collection-product'])->name('wix.collection');
-    // Route::get('wix-products', [ProductController::class, 'wixStore-collection'])->name('wix.collection');
-    // Route::get('wix-products/{product}', [ProductController::class, 'wixStore-collection'])->name('wix.collection');
-
+    Route::get('category/{id}', [CategoryController::class, 'show'])->name('categories.show');
 
     // products routes
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
