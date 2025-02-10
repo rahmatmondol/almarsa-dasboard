@@ -44,19 +44,11 @@ class CategoryController extends Controller
             return [
                 'id' => $product['id'],
                 'name' => $product['name'],
-                'description' => $product['description'],
-                'sku' => $product['sku'] ?? '',
-                'weight' => $product['weight'] ?? '',
                 'stock' => $product['stock'],
                 'price' => $product['price'],
-                'priceRange' => $product['priceRange'],
                 'discount' => $product['discount'],
-                'additionalInfoSections' => $product['additionalInfoSections'],
-                'ribbons' => $product['ribbons'],
                 'ribbon' => $product['ribbon'],
                 'media' => $product['media'],
-                'productOptions' => $product['productOptions'],
-                'collectionIds' => $product['collectionIds'],
             ];
         }, $products['products']);
 

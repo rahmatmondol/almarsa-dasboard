@@ -12,6 +12,7 @@ class WixStore
     public $limit;
     public $offset;
     public $collectionId;
+    public $productId;
 
     /**
      * Constructor for the WixStore class
@@ -20,11 +21,12 @@ class WixStore
      * @param int $offset The starting point for item retrieval
      */
 
-    public function __construct($limit, $offset, $collectionId = null)
+    public function __construct($limit, $offset, $collectionId = null, $productId = null)
     {
         $this->limit = $limit;
         $this->offset = $offset;
         $this->collectionId = $collectionId;
+        $this->productId = $productId;
     }
 
     /**
@@ -145,6 +147,57 @@ class WixStore
 
             // Return just the collections array
             return $data;
+        } catch (Exception $e) {
+            Log::error('Wix Collections Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
+    }
+
+
+    /**
+     * Get single product from Wix Store
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getWixProduct()
+    {
+        try {
+            $accessToken = Auth::getAccessToken();
+            if (!$accessToken) {
+                throw new Exception('Failed to obtain valid Wix access token');
+            }
+
+            $response = Http::withOptions([
+                'curl' => [
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false,
+                ],
+                'timeout' => 30,
+            ])
+                ->withHeaders([
+                    'Authorization' => 'Bearer ' . $accessToken,
+                    'Content-Type' => 'application/json',
+                ])
+                ->get(config('services.wix.base_url') . '/stores/v1/products/' . $this->productId);
+
+            if (!$response->successful()) {
+                Log::error('Wix API Error', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
+                return false;
+            }
+            $data = $response->json();
+
+            if (!isset($data['product'])) {
+                return false;
+            }
+
+            // Return just the collections array
+            return $data['product'];
         } catch (Exception $e) {
             Log::error('Wix Collections Error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()

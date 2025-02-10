@@ -28,19 +28,11 @@ class ProductController extends Controller
             return [
                 'id' => $product['id'],
                 'name' => $product['name'],
-                'description' => $product['description'],
-                'sku' => $product['sku'] ?? '',
-                'weight' => $product['weight'] ?? '',
                 'stock' => $product['stock'],
                 'price' => $product['price'],
-                'priceRange' => $product['priceRange'],
                 'discount' => $product['discount'],
-                'additionalInfoSections' => $product['additionalInfoSections'],
-                'ribbons' => $product['ribbons'],
                 'ribbon' => $product['ribbon'],
                 'media' => $product['media'],
-                'productOptions' => $product['productOptions'],
-                'collectionIds' => $product['collectionIds'],
             ];
         }, $products['products']);
 
@@ -51,14 +43,44 @@ class ProductController extends Controller
             'totalResults' => $products['totalResults'],
             'items' => $products['metadata']['items'],
             'offset' => $products['metadata']['offset'],
-
         ];
 
         return response()->json($data, 200);
     }
 
-    public function show(Request $request, Product $product): Response
+    public function show(Request $request)
     {
-        return new ProductResource($product);
+        $wixStore = new WixStore(null, null, null, $request->id);
+        $product = $wixStore->getWixProduct();
+
+        if (!$product) {
+            return response()->json(['success' => false, 'message' => 'Product not found'], 404);
+        }
+
+        $product_data = [
+            'id' => $product['id'],
+            'name' => $product['name'],
+            'description' => $product['description'],
+            'sku' => $product['sku'] ?? '',
+            'weight' => $product['weight'] ?? '',
+            'stock' => $product['stock'],
+            'price' => $product['price'],
+            'priceRange' => $product['priceRange'],
+            'discount' => $product['discount'],
+            'additionalInfoSections' => $product['additionalInfoSections'],
+            'ribbons' => $product['ribbons'],
+            'ribbon' => $product['ribbon'],
+            'media' => $product['media'],
+            'productOptions' => $product['productOptions'],
+            'variants' => $product['variants'],
+        ];
+
+        $data = [
+            'success' => true,
+            'message' => 'Products retrieved successfully',
+            'product' => $product_data,
+        ];
+
+        return response()->json($data, 200);
     }
 }
