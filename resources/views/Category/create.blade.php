@@ -71,8 +71,8 @@
                         <div class="input-area">
                             <label for="status" class="form-label">Status</label>
                             <select id="status" name="status" class="form-control">
-                                <option value="active" class="dark:bg-slate-700">Active</option>
-                                <option value="inactive" class="dark:bg-slate-700">Inactive</option>
+                                <option value="1" class="dark:bg-slate-700">Active</option>
+                                <option value="0" class="dark:bg-slate-700">Inactive</option>
                             </select>
                         </div>
                         <div class="input-area">

@@ -14,13 +14,16 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use App\Wix\WixStore;
 
+
 class CategoryController extends Controller
 {
 
     public function index(Request $request)
     {
-        $collections = Category::all();
-        return response()->json($collections, 200);
+        // Get only active categories
+        $activeCategories = Category::getActiveTree();
+
+        return response()->json($activeCategories, 200);
     }
 
     public function show(Request $request, $id)

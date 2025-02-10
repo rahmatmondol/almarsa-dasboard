@@ -79,15 +79,15 @@
                                             </td>
 
                                             <td class="table-td ">
-                                                @if ($category->status == 'inactive')
-                                                    <div
-                                                        class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-danger-500  bg-danger-500">
-                                                        Inactive
-                                                    </div>
-                                                @else
+                                                @if ($category->status)
                                                     <div
                                                         class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-success-500  bg-success-500">
                                                         Active
+                                                    </div>
+                                                @else
+                                                    <div
+                                                        class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-danger-500  bg-danger-500">
+                                                        Inactive
                                                     </div>
                                                 @endif
 
@@ -106,7 +106,9 @@
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button onclick="return confirm('Are you sure? You want to delete this category')" class="action-btn delete-btn" type="submit">
+                                                        <button
+                                                            onclick="return confirm('Are you sure? You want to delete this category')"
+                                                            class="action-btn delete-btn" type="submit">
                                                             <iconify-icon icon="heroicons:trash"></iconify-icon>
                                                         </button>
                                                     </form>

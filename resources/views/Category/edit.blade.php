@@ -70,8 +70,8 @@
                         <div class="input-area">
                             <label for="status" class="form-label">Status</label>
                             <select id="status" name="status" class="form-control">
-                                <option value="active" class="dark:bg-slate-700">Active</option>
-                                <option value="inactive" class="dark:bg-slate-700">Inactive</option>
+                                <option value="1" class="dark:bg-slate-700">Active</option>
+                                <option value="0" class="dark:bg-slate-700">Inactive</option>
                             </select>
                         </div>
                         <div class="input-area">
@@ -105,10 +105,10 @@
 
             let limit = 100;
             let offset = 0;
-
+            let status = '{{ $category->status }}';
             // set parent category
             $('#select').val({{ $category->parent_id }});
-            $('#status').val('{{ $category->status }}');
+            $('#status').val(status ? 1 : 0);
             // set collection
 
 

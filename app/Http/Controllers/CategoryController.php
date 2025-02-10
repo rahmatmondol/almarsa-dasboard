@@ -80,7 +80,7 @@ class CategoryController extends Controller
             $category->description = $request->description;
             $category->parent_id = $request->parent_id;
             $category->collection_id = $request->collection_id;
-            $category->status = $request->status;
+            $category->status = $request->status ;
             $category->save();
 
             if ($request->hasFile('image')) {
