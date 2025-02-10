@@ -34,17 +34,40 @@ class CategoryController extends Controller
             return response()->json(['success' => false, 'message' => 'Category not found'], 404);
         }
 
-        $limit = $request->query('limit', 100) ?: 100;
-        $offset = $request->query('offset', 1) ?: 1;
+        $limit = $request->query('limit') ?: 20;
+        $offset = $request->query('offset') ?: 1;
 
-        $wixStore = new WixStore($limit, $offset);
+        $wixStore = new WixStore($limit, $offset, $category->collection_id);
         $products = $wixStore->getWixProducts();
+
+        $products_data = array_map(function ($product) {
+            return [
+                'id' => $product['id'],
+                'name' => $product['name'],
+                'description' => $product['description'],
+                'sku' => $product['sku'] ?? '',
+                'weight' => $product['weight'] ?? '',
+                'stock' => $product['stock'],
+                'price' => $product['price'],
+                'priceRange' => $product['priceRange'],
+                'discount' => $product['discount'],
+                'additionalInfoSections' => $product['additionalInfoSections'],
+                'ribbons' => $product['ribbons'],
+                'ribbon' => $product['ribbon'],
+                'media' => $product['media'],
+                'productOptions' => $product['productOptions'],
+                'collectionIds' => $product['collectionIds'],
+            ];
+        }, $products['products']);
 
         $data = [
             'success' => true,
             'message' => 'Category retrieved successfully',
-            'info' => $category,
-            'data' => $products
+            'category' => $category,
+            'products' => $products_data,
+            'totalResults' => $products['totalResults'],
+            'items' => $products['metadata']['items'],
+            'offset' => $products['metadata']['offset'],
         ];
 
         return response()->json($data, 200);
@@ -52,8 +75,8 @@ class CategoryController extends Controller
 
     public function wixCollection(Request $request)
     {
-        $limit = $request->query('limit', 100) ?: 100;
-        $offset = $request->query('offset', 1) ?: 1;
+        $limit = $request->query('limit') ?: 100;
+        $offset = $request->query('offset') ?: 1;
 
         $wixStore = new WixStore($limit, $offset);
         $collections = $wixStore->getWixCollections();

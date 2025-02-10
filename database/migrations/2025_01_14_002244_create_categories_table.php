@@ -20,7 +20,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('status', [true, false,])->default(true);
             $table->string('collection_id')->nullable();
+            $table->string('product_count')->nullable();
             $table->string('image')->nullable();
+            $table->string('icon')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->timestamps();
         });

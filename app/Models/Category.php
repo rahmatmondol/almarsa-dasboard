@@ -22,6 +22,8 @@ class Category extends Model
         'image',
         'slug',
         'description',
+        'icon',
+        'product_count',
         'status',
         'collection_id',
         'parent_id',

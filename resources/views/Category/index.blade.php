@@ -38,11 +38,19 @@
                                         </th>
 
                                         <th scope="col" class=" table-th ">
+                                            icon
+                                        </th>
+
+                                        <th scope="col" class=" table-th ">
                                             Name
                                         </th>
 
                                         <th scope="col" class=" table-th ">
                                             Parent
+                                        </th>
+
+                                        <th scope="col" class=" table-th ">
+                                            product count
                                         </th>
 
                                         <th scope="col" class=" table-th ">
@@ -69,6 +77,14 @@
                                                     </span>
                                                 </span>
                                             </td>
+                                              <td class="table-td">
+                                                <span class="flex">
+                                                    <span class="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none">
+                                                        <img src="{{ $category->icon ?? asset('assets/images/post/t-3.png') }}"
+                                                            class="object-cover w-full h-full rounded-full">
+                                                    </span>
+                                                </span>
+                                            </td>
                                             <td class="table-td ">{{ $category->name }}</td>
                                             <td class="table-td ">
                                                 @if ($category->parent_id)
@@ -77,6 +93,8 @@
                                                     <span class="text-xs text-slate-500">No Parent</span>
                                                 @endif
                                             </td>
+
+                                            <td class="table-td ">{{ $category->product_count }}</td>
 
                                             <td class="table-td ">
                                                 @if ($category->status)

@@ -37,15 +37,30 @@
                             </select>
                         </div>
                         <div class="input-area">
+                            <label for="image" class="form-label">Category icon</label>
+                            <input id="icon" name="icon" type="file" class="form-control"
+                                onchange="iconPreview(event)">
+                            @if ($category->icon)
+                                <div class="mt-4 relative">
+                                    <img id="icon-preview" src="{{ $category->icon }}" style="max-width: 200px;">
+                                    <button type="button" style="display: none;"
+                                        class="delete-icon-btn btn-danger p-1 rounded-full text-white absolute top-0 right-0"
+                                        onclick="deleteIcon()">x</button>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="input-area">
                             <label for="image" class="form-label">Category Image</label>
                             <input id="image" name="image" type="file" class="form-control"
                                 onchange="previewImage(event)">
-                            <div class="mt-4 relative">
-                                <img id="image-preview" src="{{ asset($category->image) }}" style="max-width: 100%;">
-                                <button type="button" style="display: none;"
-                                    class="delete-image-btn delete-image-btn btn-danger p-1 rounded-full text-white absolute top-0 right-0"
-                                    onclick="deleteImage()">x</button>
-                            </div>
+                            @if ($category->image)
+                                <div class="mt-4 relative">
+                                    <img id="image-preview" src="{{ $category->image }}" style="max-width: 100%;">
+                                    <button type="button" style="display: none;"
+                                        class="delete-image-btn btn-danger p-1 rounded-full text-white absolute top-0 right-0"
+                                        onclick="deleteImage()">x</button>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -59,6 +74,12 @@
                         </div>
                     </header>
                     <div class="card-text h-full space-y-4">
+
+                        <div class="input-area">
+                            <label for="collection_id" class="form-label">Product Count</label>
+                            <input id="product_count" name="product_count" value="{{ $category->product_count }}"
+                                type="text" class="form-control" readonly>
+                        </div>
 
                         <div class="input-area">
                             <label for="collection_id" class="form-label">Select Wix Collection</label>
@@ -97,14 +118,30 @@
 
         function deleteImage() {
             $('#image-preview').attr('src', '').hide();
-            $('#image').val('');
+            $('#icon').val('');
             $('.delete-image-btn').hide();
+        }
+
+        function iconPreview(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                $('#icon-preview').attr('src', reader.result).show();
+            };
+            reader.readAsDataURL(event.target.files[0]);
+            $('.delete-icon-btn').show();
+        }
+
+        function deleteIcon() {
+            $('#icon-preview').attr('src', '').hide();
+            $('#image').val('');
+            $('.delete-icon-btn').hide();
         }
 
         $(document).ready(function() {
 
             let limit = 100;
             let offset = 0;
+            let collections = [];
             let status = '{{ $category->status }}';
             // set parent category
             $('#select').val({{ $category->parent_id }});
@@ -121,13 +158,13 @@
                     offset: offset
                 },
                 success: function(data) {
-                    console.log(data);
                     if (data.collections.length == 0) {
                         $('#collection_id').append(
                             '<option value="" style="background: #32bcff;" selected>No Collection Found</option>'
                         );
                         return;
                     }
+                    collections = data.collections;
 
                     if (offset > 0) {
                         $('#collection_id').append(
@@ -242,6 +279,14 @@
                 });
             });
 
+
+            // set product count
+            $(document).on('change', '#collection_id', function() {
+                let collection_id = $(this).val();
+                let product_count = collections.find((collection) => collection.id == collection_id)
+                    .numberOfProducts;
+                $('#product_count').val(product_count);
+            });
 
             // Submit Form
             $('#category-form').on('submit', function(e) {

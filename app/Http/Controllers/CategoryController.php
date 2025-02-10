@@ -34,6 +34,7 @@ class CategoryController extends Controller
             $category->slug = Str::slug($request->name);
             $category->description = $request->description;
             $category->parent_id = $request->parent_id;
+            $category->product_count = $request->product_count;
             $category->collection_id = $request->collection_id;
             $category->status = $request->status;
             $category->save();
@@ -44,6 +45,15 @@ class CategoryController extends Controller
                 $filename = time() . '_' . $originalName;
                 $imageFile->move('uploads/categories/', $filename);
                 $category->image = url('uploads/categories/' . $filename);
+                $category->save();
+            }
+
+            if ($request->hasFile('icon')) {
+                $imageFile = $request->file('icon');
+                $originalName = $imageFile->getClientOriginalName();
+                $filename = time() . '_' . $originalName;
+                $imageFile->move('uploads/categories/', $filename);
+                $category->icon = url('uploads/categories/' . $filename);
                 $category->save();
             }
 
@@ -79,10 +89,12 @@ class CategoryController extends Controller
             $category->slug = Str::slug($request->name);
             $category->description = $request->description;
             $category->parent_id = $request->parent_id;
+            $category->product_count = $request->product_count;
             $category->collection_id = $request->collection_id;
-            $category->status = $request->status ;
+            $category->status = $request->status;
             $category->save();
 
+            // update image
             if ($request->hasFile('image')) {
 
                 $relativePath = parse_url($category->image, PHP_URL_PATH);
@@ -95,6 +107,22 @@ class CategoryController extends Controller
                 $filename = time() . '_' . $originalName;
                 $imageFile->move('uploads/categories/', $filename);
                 $category->image = url('uploads/categories/' . $filename);
+                $category->save();
+            }
+
+            // update icon
+            if ($request->hasFile('icon')) {
+
+                $relativePath = parse_url($category->icon, PHP_URL_PATH);
+                if (file_exists(public_path($relativePath))) {
+                    unlink(public_path($relativePath)); // Deletes the file
+                }
+
+                $imageFile = $request->file('icon');
+                $originalName = $imageFile->getClientOriginalName();
+                $filename = time() . '_' . $originalName;
+                $imageFile->move('uploads/categories/', $filename);
+                $category->icon = url('uploads/categories/' . $filename);
                 $category->save();
             }
 
@@ -116,6 +144,13 @@ class CategoryController extends Controller
 
         if ($category->image) {
             $relativePath = parse_url($category->image, PHP_URL_PATH);
+            if (file_exists(public_path($relativePath))) {
+                unlink(public_path($relativePath)); // Deletes the file
+            }
+        }
+
+        if ($category->icon) {
+            $relativePath = parse_url($category->icon, PHP_URL_PATH);
             if (file_exists(public_path($relativePath))) {
                 unlink(public_path($relativePath)); // Deletes the file
             }

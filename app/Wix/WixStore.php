@@ -11,7 +11,7 @@ class WixStore
 {
     public $limit;
     public $offset;
-    public $categoryID;
+    public $collectionId;
 
     /**
      * Constructor for the WixStore class
@@ -20,11 +20,11 @@ class WixStore
      * @param int $offset The starting point for item retrieval
      */
 
-    public function __construct($limit, $offset, $categoryID = null)
+    public function __construct($limit, $offset, $collectionId = null)
     {
         $this->limit = $limit;
         $this->offset = $offset;
-        $this->categoryID = $categoryID;
+        $this->collectionId = $collectionId;
     }
 
     /**
@@ -92,13 +92,19 @@ class WixStore
      * @return array
      * @throws Exception
      */
-    public static function getWixProducts(): array
+    public function getWixProducts(): array
     {
         try {
             $accessToken = Auth::getAccessToken();
             if (!$accessToken) {
                 throw new Exception('Failed to obtain valid Wix access token');
             }
+
+            $filter = json_encode([
+                "collections.id" => [
+                    "\$hasSome" => [$this->collectionId]
+                ]
+            ]);
 
             $response = Http::withOptions([
                 'curl' => [
@@ -112,12 +118,16 @@ class WixStore
                     'Content-Type' => 'application/json',
                 ])
                 ->post(config('services.wix.base_url') . '/stores/v1/products/query', [
-                    "paging" => [
-                        "limit" => 5,
-                        "offset" => 0
+                    "query" => [
+                        "paging" => [
+                            "limit" => $this->limit,
+                            "offset" => $this->offset,
+                        ],
+                        "filter" => $this->collectionId ? $filter : null,
+                        "includeNumberOfProducts" => true,
+                        "includeDescription" => true,
+                        "includeVariants" => true,
                     ],
-                    "includeDescription" => true,
-                    "includeVariants" => true,
                 ]);
 
             if (!$response->successful()) {
@@ -134,7 +144,7 @@ class WixStore
             }
 
             // Return just the collections array
-            return $data['products'];
+            return $data;
         } catch (Exception $e) {
             Log::error('Wix Collections Error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
