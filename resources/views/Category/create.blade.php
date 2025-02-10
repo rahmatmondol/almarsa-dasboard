@@ -103,6 +103,7 @@
 
 
     <script>
+        // image
         function previewImage(event) {
             var reader = new FileReader();
             reader.onload = function() {
@@ -112,12 +113,14 @@
             $('.delete-image-btn').show();
         }
 
+        // delete image
         function deleteImage() {
             $('#image-preview').attr('src', '').hide();
             $('#icon').val('');
             $('.delete-image-btn').hide();
         }
 
+        // icon
         function iconPreview(event) {
             var reader = new FileReader();
             reader.onload = function() {
@@ -127,14 +130,14 @@
             $('.delete-icon-btn').show();
         }
 
+        // delete icon
         function deleteIcon() {
             $('#icon-preview').attr('src', '').hide();
             $('#image').val('');
             $('.delete-icon-btn').hide();
         }
 
-
-
+        // jquery
         $(document).ready(function() {
 
             let limit = 100;
@@ -150,13 +153,14 @@
                     offset: offset
                 },
                 success: function(data) {
-                    collections = data.collections;
                     if (data.collections.length == 0) {
                         $('#collection_id').append(
                             '<option value="" style="background: #32bcff;" selected>No Collection Found</option>'
                         );
                         return;
                     }
+
+                    collections = data.collections;
 
                     if (offset > 0) {
                         $('#collection_id').append(
@@ -176,6 +180,7 @@
                         );
                     }
 
+
                 },
                 error: function(data) {
                     console.log(data);
@@ -194,14 +199,13 @@
                         offset: offset
                     },
                     success: function(data) {
-                        console.log(data);
                         if (data.collections.length == 0) {
                             $('#collection_id').append(
                                 '<option value="" class="dark:bg-slate-700" selected>No Collection Found</option>'
                             );
                             return;
                         }
-
+                        collections = data.collections;
                         if (offset > 0) {
                             $('#collection_id').append(
                                 '<option class="dark:bg-slate-700 previous-page" value="">Previous Page</option>'
@@ -238,14 +242,13 @@
                         offset: offset
                     },
                     success: function(data) {
-                        console.log(data);
                         if (data.collections.length == 0) {
                             $('#collection_id').append(
                                 '<option value="" class="dark:bg-slate-700" selected>No Collection Found</option>'
                             );
                             return;
                         }
-
+                        collections = data.collections;
                         if (offset > 0) {
                             $('#collection_id').append(
                                 '<option class="dark:bg-slate-700 previous-page" value="">Previous Page</option>'
@@ -269,14 +272,16 @@
                 });
             });
 
-            // set product count
+            // set data
             $(document).on('change', '#collection_id', function() {
-                let collection_id = $(this).val();
-                let product_count = collections.find((collection) => collection.id == collection_id)
-                    .numberOfProducts;
-                $('#product_count').val(product_count);
+                const collection_id = $(this).val();
+                const collection = collections.find(collection => collection.id == collection_id);
+                console.log(collection);
+                if (collection) {
+                    $('#product_count').val(collection.numberOfProducts);
+                    $('#name').val(collection.name);
+                }
             });
-
 
             // Submit Form
             $('#category-form').on('submit', function(e) {

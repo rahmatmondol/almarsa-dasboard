@@ -1,23 +1,28 @@
 <x-app-layout>
     <!-- BEGIN: Breadcrumb -->
     <div class="mb-5">
-        <ul class="m-0 p-0 list-none">
-            <li class="inline-block relative top-[3px] text-base text-primary-500 font-Inter ">
-                <a href="{{ route('dashboard') }}">
-                    <iconify-icon icon="heroicons-outline:home"></iconify-icon>
-                    <iconify-icon icon="heroicons-outline:chevron-right"
-                        class="relative text-slate-500 text-sm rtl:rotate-180"></iconify-icon>
-                </a>
-            </li>
-            <li class="inline-block relative text-sm text-slate-500 font-Inter dark:text-white">
-                Categories</li>
-        </ul>
+        <div class="flex justify-between space-x-2 items-center">
+            <ul class="m-0 p-0 list-none">
+                <li class="inline-block relative top-[3px] text-base text-primary-500 font-Inter ">
+                    <a href="{{ route('dashboard') }}">
+                        <iconify-icon icon="heroicons-outline:home"></iconify-icon>
+                        <iconify-icon icon="heroicons-outline:chevron-right"
+                            class="relative text-slate-500 text-sm rtl:rotate-180"></iconify-icon>
+                    </a>
+                </li>
+                <li class="inline-block relative text-sm text-slate-500 font-Inter dark:text-white">
+                    Categories</li>
+            </ul>
+            <a href="{{ route('category.create') }}"
+                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <iconify-icon icon="heroicons-outline:plus" class="mr-2"></iconify-icon>
+                Add New Category
+            </a>
+        </div>
     </div>
     <!-- END: BreadCrumb -->
 
-
     <div class=" space-y-5">
-
         <div class="card">
             <div class="card-body px-6 pb-6">
                 <div class="overflow-x-auto -mx-6 dashcode-data-table">
@@ -77,7 +82,7 @@
                                                     </span>
                                                 </span>
                                             </td>
-                                              <td class="table-td">
+                                            <td class="table-td">
                                                 <span class="flex">
                                                     <span class="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none">
                                                         <img src="{{ $category->icon ?? asset('assets/images/post/t-3.png') }}"

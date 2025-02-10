@@ -32,6 +32,9 @@
                             <select id="select" name="parent_id" class="form-control">
                                 <option value="" class="dark:bg-slate-700">Root</option>
                                 @foreach ($categories as $value)
+                                    @if ($value->id == $category->id)
+                                        @continue
+                                    @endif
                                     <option value="{{ $value->id }}">{{ $value->name }}</option>
                                 @endforeach
                             </select>
@@ -148,7 +151,6 @@
             $('#status').val(status ? 1 : 0);
             // set collection
 
-
             //get wix collections
             $.ajax({
                 type: 'GET',
@@ -229,6 +231,8 @@
                                 '<option class="dark:bg-slate-700 next-page" value="">Next Page</option>'
                             );
                         }
+
+                        $('#collection_id').val('{{ $category->collection_id }}');
                     },
                     error: function(data) {
                         console.log(data);
@@ -272,6 +276,8 @@
                                 '<option class="dark:bg-slate-700 next-page" value="">Next Page</option>'
                             );
                         }
+
+                        $('#collection_id').val('{{ $category->collection_id }}');
                     },
                     error: function(data) {
                         console.log(data);
@@ -279,13 +285,15 @@
                 });
             });
 
-
-            // set product count
+            // set data
             $(document).on('change', '#collection_id', function() {
-                let collection_id = $(this).val();
-                let product_count = collections.find((collection) => collection.id == collection_id)
-                    .numberOfProducts;
-                $('#product_count').val(product_count);
+                const collection_id = $(this).val();
+                const collection = collections.find(collection => collection.id == collection_id);
+                console.log(collection);
+                if (collection) {
+                    $('#product_count').val(collection.numberOfProducts);
+                    $('#name').val(collection.name);
+                }
             });
 
             // Submit Form
