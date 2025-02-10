@@ -24,8 +24,8 @@ Route::group([
     // carts routes
     Route::get('carts', [CartController::class, 'index'])->name('carts.index');
     Route::post('cart', [CartController::class, 'store'])->name('carts.store');
-    Route::put('cart/{cart}', [CartController::class, 'update'])->name('carts.update');
-    Route::delete('cart/{cart}', [CartController::class, 'destroy'])->name('carts.destroy');
+    Route::post('cart-update', [CartController::class, 'update'])->name('carts.update');
+    Route::delete('cart/{id}', [CartController::class, 'destroy'])->name('carts.destroy');
 
     // abouts routes
     Route::get('abouts/{about}', [AboutController::class, 'show'])->name('abouts.show');

@@ -20,9 +20,11 @@ class CartUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sub_total' => ['required', 'numeric', 'between:-99999999.99,99999999.99'],
-            'total' => ['required', 'numeric', 'between:-99999999.99,99999999.99'],
-            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'sub_total' => 'decimal:2',
+            'grand_total' => 'decimal:2',
+            'discount' => 'decimal:2',
+            'user_id' => 'exists:users,id',
+            'count' => 'integer',
         ];
     }
 }

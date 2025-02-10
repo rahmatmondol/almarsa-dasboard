@@ -18,9 +18,12 @@ class CartItem extends Model
     protected $fillable = [
         'product_id',
         'quantity',
-        'amount',
+        'price',
+        'sub_total',
         'cart_id',
         'user_id',
+        'discount',
+        'name',
     ];
 
     /**
@@ -32,9 +35,12 @@ class CartItem extends Model
         'id' => 'integer',
         'product_id' => 'string',
         'quantity' => 'integer',
-        'amount' => 'decimal:2',
+        'price' => 'decimal:2',
+        'sub_total' => 'decimal:2',
         'cart_id' => 'integer',
         'user_id' => 'integer',
+        'discount' => 'decimal:2',
+        'name' => 'string',
     ];
 
     public function cart(): BelongsTo

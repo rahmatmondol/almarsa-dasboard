@@ -14,13 +14,26 @@ use App\Wix\WixStore;
 
 class CartController extends Controller
 {
-    public function index(Request $request): Response
+    // get cart
+    public function index(Request $request)
     {
-        $carts = Cart::all();
+        // return response with cart and cart items
+        $cart = auth()->user()->cart()->with('cartItems')->first();
 
-        return new CartCollection($carts);
+        if (!$cart) {
+            return response()->json(['success' => false, 'message' => 'Your cart is empty'], 404);
+        }
+
+        $data = [
+            'success' => true,
+            'message' => 'Cart retrieved successfully',
+            'product' => $cart,
+        ];
+
+        return response()->json($data, 200);
     }
 
+    // add product to cart
     public function store(CartStoreRequest $request)
     {
 
@@ -43,27 +56,33 @@ class CartController extends Controller
         $cartItem = CartItem::where('product_id', $product['id'])->where('user_id', auth()->user()->id)->first();
         if ($cartItem) {
             $cartItem->quantity += $request->quantity;
-            $cartItem->amount += $product['price']['discountedPrice'] * $request->quantity;
+            $cartItem->price = $product['price']['price'];
+            $cartItem->discount = ($product['price']['price'] - $product['price']['discountedPrice']) * $request->quantity;
+            $cartItem->sub_total += $product['price']['discountedPrice'] * $request->quantity;
             $cartItem->save();
 
-            // update cart total
-            $cart->total += $product['price']['discountedPrice'] * $request->quantity;
-            $cart->sub_total += $product['price']['discountedPrice'] * $request->quantity;
-            $cart->count += $request->quantity;
+            $cart->sub_total = $cart->cartItems->sum('sub_total');
+            $cart->discount = $cart->cartItems->sum('discount');
+            $cart->grand_total = $cart->cartItems->sum('sub_total') - $cart->cartItems->sum('discount');
+            $cart->count = $cart->cartItems->sum('quantity');
             $cart->save();
         } else {
             $cartItem = CartItem::create([
+                'name' => $product['name'],
                 'product_id' => $product['id'],
                 'quantity' => $request->quantity,
-                'amount' => $product['price']['discountedPrice'] * $request->quantity,
+                'price' => $product['price']['price'],
+                'discount' => $product['price']['price'] - $product['price']['discountedPrice'],
+                'sub_total' => $product['price']['discountedPrice'] * $request->quantity,
                 'user_id' => auth()->user()->id,
                 'cart_id' => $cart->id
             ]);
 
             // update cart total
-            $cart->total += $product['price']['discountedPrice'] * $request->quantity;
-            $cart->sub_total += $product['price']['discountedPrice'] * $request->quantity;
-            $cart->count += $request->quantity;
+            $cart->sub_total = $cart->cartItems->sum('sub_total');
+            $cart->discount = $cart->cartItems->sum('discount');
+            $cart->grand_total = $cart->cartItems->sum('sub_total') - $cart->cartItems->sum('discount');
+            $cart->count = $cart->cartItems->sum('quantity');
             $cart->save();
         }
 
@@ -77,29 +96,80 @@ class CartController extends Controller
 
         $data = [
             'success' => true,
-            'message' => 'Products retrieved successfully',
+            'message' => 'Product added to cart successfully',
             'product' => $cart,
         ];
 
         return response()->json($data, 200);
     }
 
-    public function show(Request $request, Cart $cart): Response
+    // show cart
+    public function show(Request $request, Cart $cart)
     {
         return new CartResource($cart);
     }
 
-    public function update(CartUpdateRequest $request, Cart $cart): Response
+    // update cart
+    public function update(Request $request)
     {
-        $cart->update($request->validated());
+        $product_id = $request->product_id;
+        $quantity = $request->quantity;
 
-        return new CartResource($cart);
+        $wixStore = new WixStore(null, null, null, $request->product_id);
+        $product = $wixStore->getWixProduct();
+        if (!$product) {
+            return response()->json(['success' => false, 'message' => 'invalid product'], 404);
+        }
+
+        $cartItem = CartItem::where('product_id', $product_id)->where('user_id', auth()->user()->id)->first();
+        if ($cartItem) {
+            $cartItem->quantity = $request->quantity;
+            $cartItem->price = $product['price']['price'];
+            $cartItem->discount = ($product['price']['price'] - $product['price']['discountedPrice']) * $request->quantity;
+            $cartItem->sub_total = $product['price']['discountedPrice'] * $request->quantity;
+            $cartItem->save();
+
+            // update cart total
+            $cart = auth()->user()->cart;
+            $cart->sub_total = $cart->cartItems->sum('sub_total');
+            $cart->discount = $cart->cartItems->sum('discount');
+            $cart->grand_total = $cart->cartItems->sum('sub_total') - $cart->cartItems->sum('discount');
+            $cart->count = $cart->cartItems->sum('quantity');
+            $cart->save();
+        } else {
+            return response()->json(['success' => false, 'message' => 'Cart item not found'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart updated successfully',
+            'cart' => $cart
+        ], 200);
     }
 
-    public function destroy(Request $request, Cart $cart): Response
+    public function destroy(Request $request, $id)
     {
-        $cart->delete();
+        $CartItem = CartItem::find($id);
+        if (!$CartItem) {
+            return response()->json(['success' => false, 'message' => 'Cart item not found'], 404);
+        }
 
-        return response()->noContent();
+        $CartItem->delete();
+
+        // update cart total
+        $cart = auth()->user()->cart;
+        $cart->sub_total = $cart->cartItems->sum('sub_total');
+        $cart->discount = $cart->cartItems->sum('discount');
+        $cart->grand_total = $cart->cartItems->sum('sub_total') - $cart->cartItems->sum('discount');
+        $cart->count = $cart->cartItems->sum('quantity');
+        $cart->save();
+
+        // delete cart item
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart updated successfully',
+            'cart' => $cart
+        ], 200);
     }
 }

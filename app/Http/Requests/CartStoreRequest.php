@@ -20,9 +20,10 @@ class CartStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sub_total' => 'decimal:2',
-            'total' => 'decimal:2',
+            'grand_total' => 'decimal:2',
             'user_id' => 'exists:users,id',
+            'sub_total' => 'decimal:2',
+            'discount' => 'decimal:2',
             'count' => 'integer',
         ];
     }

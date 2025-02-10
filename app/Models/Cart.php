@@ -18,7 +18,8 @@ class Cart extends Model
      */
     protected $fillable = [
         'sub_total',
-        'total',
+        'grand_total',
+        'discount',
         'user_id',
         'count'
     ];
@@ -31,7 +32,8 @@ class Cart extends Model
     protected $casts = [
         'id' => 'integer',
         'sub_total' => 'decimal:2',
-        'total' => 'decimal:2',
+        'grand_total' => 'decimal:2',
+        'discount' => 'decimal:2',
         'user_id' => 'integer',
         'count' => 'integer',
     ];
