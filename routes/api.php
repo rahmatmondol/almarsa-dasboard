@@ -9,7 +9,7 @@ use App\Http\Controllers\api\AboutController;
 use App\Http\Controllers\api\ContactController;
 
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'auth:api',
     'namespace' => 'App\Http\Controllers',
     'prefix' => 'v1/auth',
 ], function () {
@@ -23,9 +23,9 @@ Route::group([
 
     // carts routes
     Route::get('carts', [CartController::class, 'index'])->name('carts.index');
-    Route::post('carts', [CartController::class, 'store'])->name('carts.store');
-    Route::put('carts/{cart}', [CartController::class, 'update'])->name('carts.update');
-    Route::delete('carts/{cart}', [CartController::class, 'destroy'])->name('carts.destroy');
+    Route::post('cart', [CartController::class, 'store'])->name('carts.store');
+    Route::put('cart/{cart}', [CartController::class, 'update'])->name('carts.update');
+    Route::delete('cart/{cart}', [CartController::class, 'destroy'])->name('carts.destroy');
 
     // abouts routes
     Route::get('abouts/{about}', [AboutController::class, 'show'])->name('abouts.show');

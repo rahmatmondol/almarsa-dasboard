@@ -20,6 +20,7 @@ class Cart extends Model
         'sub_total',
         'total',
         'user_id',
+        'count'
     ];
 
     /**
@@ -32,6 +33,7 @@ class Cart extends Model
         'sub_total' => 'decimal:2',
         'total' => 'decimal:2',
         'user_id' => 'integer',
+        'count' => 'integer',
     ];
 
     public function cartItems(): HasMany

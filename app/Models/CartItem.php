@@ -30,7 +30,8 @@ class CartItem extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'product_id' => 'integer',
+        'product_id' => 'string',
+        'quantity' => 'integer',
         'amount' => 'decimal:2',
         'cart_id' => 'integer',
         'user_id' => 'integer',
