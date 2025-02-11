@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\api\CategoryController as ApiCategoryController;
+use App\Http\Controllers\OrderController;
 
 
 Route::get('/', function () {
@@ -28,6 +29,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
         Route::post('/update/{category}', [CategoryController::class, 'update'])->name('category.update');
         Route::delete('/destroy/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+    });
+
+    // orders routes
+    Route::group(['prefix' => 'order'], function () {
+        Route::get('/', [OrderController::class, 'index'])->name('order.list');
+        Route::get('/show/{order}', [OrderController::class, 'show'])->name('order.show');
+        Route::get('/edit/{order}', [OrderController::class, 'edit'])->name('order.edit');
+        Route::delete('/destroy/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
     });
 
 

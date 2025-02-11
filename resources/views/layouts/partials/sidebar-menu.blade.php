@@ -11,23 +11,14 @@
              </a>
          </li>
 
-         <li class="sidebar-menu-title">Products Management</li>
+         <li class="sidebar-menu-title">Orders Management</li>
          <li>
-             <a href="javascript:void(0)" class="navItem">
+             <a href="{{ route('order.list') }}" class="navItem {{ request()->routeIs('order.list') ? 'active' : '' }}">
                  <span class="flex items-center">
                      <iconify-icon class=" nav-icon" icon="heroicons-outline:document"></iconify-icon>
-                     <span>Products</span>
+                     <span>Orders</span>
                  </span>
-                 <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
              </a>
-             <ul class="sidebar-submenu">
-                 <li>
-                     <a href="">Add Product</a>
-                 </li>
-                 <li>
-                     <a href="">Product List</a>
-                 </li>
-             </ul>
          </li>
 
          <li class="sidebar-menu-title">Category Management</li>
