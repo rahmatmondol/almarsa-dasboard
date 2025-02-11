@@ -7,6 +7,7 @@ use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\api\AboutController;
 use App\Http\Controllers\api\ContactController;
+use App\Http\Controllers\api\OrderController;
 
 
 // guest routes
@@ -51,6 +52,14 @@ Route::group([
     Route::post('cart', [CartController::class, 'store'])->name('carts.store');
     Route::post('cart-update', [CartController::class, 'update'])->name('carts.update');
     Route::delete('cart/{id}', [CartController::class, 'destroy'])->name('carts.destroy');
+
+    // orders routes
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('order', [OrderController::class, 'store'])->name('orders.store');
+    Route::put('order/{order}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('order/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
 
     // abouts routes
     Route::get('abouts/{about}', [AboutController::class, 'show'])->name('abouts.show');

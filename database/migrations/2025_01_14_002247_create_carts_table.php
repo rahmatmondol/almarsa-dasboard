@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('sub_total', 10, 2)->default(0.00);
             $table->decimal('grand_total', 10, 2)->default(0.00);
             $table->integer('count')->default(0);
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 

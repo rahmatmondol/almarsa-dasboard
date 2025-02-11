@@ -22,7 +22,6 @@ return new class extends Migration
             $table->decimal('discount', 10, 2)->default(0.00);
             $table->decimal('sub_total', 10, 2)->default(0.00);
             $table->foreignId('cart_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 

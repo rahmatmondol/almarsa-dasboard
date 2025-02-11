@@ -18,7 +18,7 @@ class CartController extends Controller
     public function index(Request $request)
     {
         // return response with cart and cart items
-        $cart = auth()->user()->cart()->with('cartItems')->first();
+        $cart = auth()->user()->cart()->with('items')->first();
 
         if (!$cart) {
             return response()->json(['success' => false, 'message' => 'Your cart is empty'], 404);
@@ -47,13 +47,15 @@ class CartController extends Controller
         $cart = auth()->user()->cart;
 
         if (!$cart) {
-            $cart = Cart::create([
-                'user_id' => auth()->user()->id
+            $cart = auth()->user()->cart()->create([
+                'sub_total' => 0,
+                'total' => 0,
             ]);
         }
 
         // Check if product already in cart
-        $cartItem = CartItem::where('product_id', $product['id'])->where('user_id', auth()->user()->id)->first();
+        $cartItem = $cart->items()->where('product_id', $product['id'])->first();
+
         if ($cartItem) {
             $cartItem->quantity += $request->quantity;
             $cartItem->price = $product['price']['price'];
@@ -61,28 +63,27 @@ class CartController extends Controller
             $cartItem->sub_total += $product['price']['discountedPrice'] * $request->quantity;
             $cartItem->save();
 
-            $cart->sub_total = $cart->cartItems->sum('sub_total');
-            $cart->discount = $cart->cartItems->sum('discount');
-            $cart->grand_total = $cart->cartItems->sum('sub_total') - $cart->cartItems->sum('discount');
-            $cart->count = $cart->cartItems->sum('quantity');
+            $cart->sub_total = $cart->items->sum('sub_total');
+            $cart->discount = $cart->items->sum('discount');
+            $cart->grand_total = $cart->items->sum('sub_total') - $cart->items->sum('discount');
+            $cart->count = $cart->items->sum('quantity');
             $cart->save();
         } else {
-            $cartItem = CartItem::create([
+            $cartItem = $cart->items()->create([
                 'name' => $product['name'],
                 'product_id' => $product['id'],
                 'quantity' => $request->quantity,
                 'price' => $product['price']['price'],
                 'discount' => $product['price']['price'] - $product['price']['discountedPrice'],
                 'sub_total' => $product['price']['discountedPrice'] * $request->quantity,
-                'user_id' => auth()->user()->id,
                 'cart_id' => $cart->id
             ]);
 
             // update cart total
-            $cart->sub_total = $cart->cartItems->sum('sub_total');
-            $cart->discount = $cart->cartItems->sum('discount');
-            $cart->grand_total = $cart->cartItems->sum('sub_total') - $cart->cartItems->sum('discount');
-            $cart->count = $cart->cartItems->sum('quantity');
+            $cart->sub_total = $cart->items->sum('sub_total');
+            $cart->discount = $cart->items->sum('discount');
+            $cart->grand_total = $cart->items->sum('sub_total') - $cart->items->sum('discount');
+            $cart->count = $cart->items->sum('quantity');
             $cart->save();
         }
 
@@ -92,7 +93,7 @@ class CartController extends Controller
 
 
         // return response with cart and cart items
-        $cart = Cart::with('cartItems')->find($cart->id);
+        $cart = Cart::with('items')->find($cart->id);
 
         $data = [
             'success' => true,
@@ -121,7 +122,7 @@ class CartController extends Controller
             return response()->json(['success' => false, 'message' => 'invalid product'], 404);
         }
 
-        $cartItem = CartItem::where('product_id', $product_id)->where('user_id', auth()->user()->id)->first();
+        $cartItem = auth()->user()->cart->items()->where('product_id', $product_id)->first();
         if ($cartItem) {
             $cartItem->quantity = $request->quantity;
             $cartItem->price = $product['price']['price'];
@@ -131,10 +132,10 @@ class CartController extends Controller
 
             // update cart total
             $cart = auth()->user()->cart;
-            $cart->sub_total = $cart->cartItems->sum('sub_total');
-            $cart->discount = $cart->cartItems->sum('discount');
-            $cart->grand_total = $cart->cartItems->sum('sub_total') - $cart->cartItems->sum('discount');
-            $cart->count = $cart->cartItems->sum('quantity');
+            $cart->sub_total = $cart->items->sum('sub_total');
+            $cart->discount = $cart->items->sum('discount');
+            $cart->grand_total = $cart->items->sum('sub_total') - $cart->items->sum('discount');
+            $cart->count = $cart->items->sum('quantity');
             $cart->save();
         } else {
             return response()->json(['success' => false, 'message' => 'Cart item not found'], 404);
@@ -158,10 +159,10 @@ class CartController extends Controller
 
         // update cart total
         $cart = auth()->user()->cart;
-        $cart->sub_total = $cart->cartItems->sum('sub_total');
-        $cart->discount = $cart->cartItems->sum('discount');
-        $cart->grand_total = $cart->cartItems->sum('sub_total') - $cart->cartItems->sum('discount');
-        $cart->count = $cart->cartItems->sum('quantity');
+        $cart->sub_total = $cart->items->sum('sub_total');
+        $cart->discount = $cart->items->sum('discount');
+        $cart->grand_total = $cart->items->sum('sub_total') - $cart->items->sum('discount');
+        $cart->count = $cart->items->sum('quantity');
         $cart->save();
 
         // delete cart item

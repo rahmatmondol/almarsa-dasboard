@@ -38,7 +38,7 @@ class Cart extends Model
         'count' => 'integer',
     ];
 
-    public function cartItems(): HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(CartItem::class);
     }
