@@ -24,12 +24,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $adminRole = Role::create(['name' => 'admin']);
+        $userRole = Role::create(['name' => 'customer']);
 
         $permissions = Permission::all();
         $adminRole->givePermissionTo($permissions);
-        
         $admin->assignRole($adminRole);
-      
     }
 }
 

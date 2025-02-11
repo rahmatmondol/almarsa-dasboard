@@ -8,11 +8,36 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\api\AboutController;
 use App\Http\Controllers\api\ContactController;
 
+
+// guest routes
+Route::group([
+    'namespace' => 'App\Http\Controllers',
+    'prefix' => 'v1',
+], function () {
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+});
+
 Route::group([
     'middleware' => 'auth:api',
     'namespace' => 'App\Http\Controllers',
     'prefix' => 'v1/auth',
 ], function () {
+
+    // user routes
+    Route::get('me', [AuthController::class, 'me'])->name('me');
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('update-profile', [AuthController::class, 'updateProfile'])->name('update-profile');
+    Route::post('change-password', [AuthController::class, 'changePassword'])->name('change-password');
+    Route::post('forget-password', [AuthController::class, 'forgetPassword'])->name('forget-password');
+
+    // users management
+    // Route::get('users', [AuthController::class, 'users'])->name('users.index');
+    // Route::get('user/{id}', [AuthController::class, 'user'])->name('users.show');
+    // Route::put('user/{id}', [AuthController::class, 'update'])->name('users.update');
+    // Route::delete('user/{id}', [AuthController::class, 'destroy'])->name('users.destroy');
+
+
     // categories routes
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('category/{id}', [CategoryController::class, 'show'])->name('categories.show');
@@ -37,5 +62,3 @@ Route::group([
     Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
     Route::get('contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
 });
-
-
