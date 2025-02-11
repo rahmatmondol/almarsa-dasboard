@@ -59,6 +59,9 @@ Route::group([
     Route::post('wishlist-update', [WishlistController::class, 'update'])->name('wishlists.update');
     Route::delete('wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlists.destroy');
 
+    //wish to cart
+    Route::post('wish-to-cart', [WishlistController::class, 'addToCart'])->name('wishlists.addToCart');
+
     // orders routes
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');

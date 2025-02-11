@@ -171,4 +171,66 @@ class WishlistController extends Controller
             'wishlist' => $wishlist
         ], 200);
     }
+
+
+    // add wishlist item to cart
+    public function addToCart(Request $request)
+    {
+        $product_id = $request->product_id;
+        $wishlistItem = auth()->user()->wishlist->items()->where('product_id', $product_id)->first();
+
+        try {
+            if ($wishlistItem) {
+                $cart = auth()->user()->cart;
+                if ($cart) {
+                    // add wishlist item to cart
+                    $cart->items()->create($wishlistItem->toArray());
+
+                    //delete wishlist item
+                    $wishlistItem->delete();
+
+                    // update wishlist total
+                    $wishlist = auth()->user()->wishlist;
+                    $wishlist->sub_total = $wishlist->items->sum('sub_total');
+                    $wishlist->discount = $wishlist->items->sum('discount');
+                    $wishlist->grand_total = $wishlist->items->sum('sub_total') - $wishlist->items->sum('discount');
+                    $wishlist->count = $wishlist->items->sum('quantity');
+                    $wishlist->save();
+                } else {
+                    $cart = auth()->user()->cart()->create([
+                        'sub_total' => 0,
+                        'total' => 0,
+                    ]);
+
+                    // add wishlist item to cart
+                    $cart->items()->create($wishlistItem->toArray());
+                    $wishlistItem->delete();
+
+                    // update wishlist total
+                    $wishlist = auth()->user()->wishlist;
+                    $wishlist->sub_total = $wishlist->items->sum('sub_total');
+                    $wishlist->discount = $wishlist->items->sum('discount');
+                    $wishlist->grand_total = $wishlist->items->sum('sub_total') - $wishlist->items->sum('discount');
+                    $wishlist->count = $wishlist->items->sum('quantity');
+                    $wishlist->save();
+                }
+
+                $cart->sub_total = $cart->items->sum('sub_total');
+                $cart->discount = $cart->items->sum('discount');
+                $cart->grand_total = $cart->sub_total - $cart->discount;
+                $cart->count = $cart->items->sum('quantity');
+                $cart->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'added to cart successfully',
+                    'cart' => $cart
+                ], 200);
+            } else {
+                return response()->json(['success' => false, 'message' => 'wishlist item not found'], 404);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => 'failed to add to cart', 'error' => $th->getMessage()], 404);
+        }
+    }
 }
