@@ -15,8 +15,9 @@ return new class extends Migration
 
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->string('product_name');
-            $table->text('product_id');
+            $table->string('name');
+            $table->string('product_id');
+            $table->string('image');
             $table->integer('quantity')->default(1);
             $table->decimal('price', 10, 2)->default(0.00);
             $table->decimal('discount', 10, 2)->default(0.00);

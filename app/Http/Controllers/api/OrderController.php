@@ -15,12 +15,14 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $oredrs = auth()->user()->orders;
+        $oredrs = auth()->user()->orders()->with('items')->get();
         $data = [
             'status' => 'success',
             'message' => 'Orders retrieved successfully',
             'data' => $oredrs
         ];
+
+        return response()->json($data, 200);
     }
 
     /**
@@ -30,7 +32,7 @@ class OrderController extends Controller
     {
         // get cart
         $cart = auth()->user()->cart;
-        if ($cart->items->count() == 0) {
+        if (!$cart || $cart->items->isEmpty()) {
             return response()->json(['success' => false, 'message' => 'Your cart is empty'], 404);
         }
 
@@ -72,24 +74,21 @@ class OrderController extends Controller
 
 
             // create order items
-            foreach ($cart->items as $value) {
+            foreach ($cart->items as $item) {
                 $order->items()->create([
-                    'product_name' => $value->name,
-                    'product_id' => $value->product_id,
-                    'price' => $value->price,
-                    'discount' => $value->discount,
-                    'quantity' => $value->quantity,
-                    'sub_total' => $value->sub_total,
-                    'total' => $value->total
+                    'name' => $item->name,
+                    'product_id' => $item->product_id,
+                    'image' => $item->image,
+                    'price' => $item->price,
+                    'discount' => $item->discount,
+                    'quantity' => $item->quantity,
+                    'sub_total' => $item->sub_total,
+                    'total' => $item->total
                 ]);
             }
 
-            return $order->items;
-
-
-
             // delete cart
-            // $cart->delete();
+            $cart->delete();
 
             // update order
             $order->update([

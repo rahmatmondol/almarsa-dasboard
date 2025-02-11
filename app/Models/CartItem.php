@@ -19,6 +19,7 @@ class CartItem extends Model
         'product_id',
         'quantity',
         'price',
+        'image',
         'sub_total',
         'cart_id',
         'user_id',
@@ -32,7 +33,6 @@ class CartItem extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
         'product_id' => 'string',
         'quantity' => 'integer',
         'price' => 'decimal:2',
@@ -41,6 +41,7 @@ class CartItem extends Model
         'user_id' => 'integer',
         'discount' => 'decimal:2',
         'name' => 'string',
+        'image' => 'string',
     ];
 
     public function cart(): BelongsTo

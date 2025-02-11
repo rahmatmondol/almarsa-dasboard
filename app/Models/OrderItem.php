@@ -17,8 +17,9 @@ class OrderItem extends Model
      */
     protected $fillable = [
         'order_id',
-        'product_name',
+        'name',
         'product_id',
+        'image',
         'quantity',
         'price',
         'discount',
@@ -32,12 +33,13 @@ class OrderItem extends Model
      */
     protected $casts = [
         'order_id' => 'integer',
-        'product_name' => 'string',
-        'product_id' => 'integer',
+        'name' => 'string',
+        'product_id' => 'string',
         'quantity' => 'integer',
         'price' => 'float',
         'discount' => 'float',
         'sub_total' => 'float',
+        'image' => 'string',
     ];
 
     public function order(): BelongsTo
