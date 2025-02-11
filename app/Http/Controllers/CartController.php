@@ -151,7 +151,7 @@ class CartController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $CartItem = CartItem::find($id);
+        $CartItem = auth()->user()->cart->items()->find($id);
         if (!$CartItem) {
             return response()->json(['success' => false, 'message' => 'Cart item not found'], 404);
         }
@@ -170,7 +170,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Cart updated successfully',
+            'message' => 'Cart deleted successfully',
             'cart' => $cart
         ], 200);
     }

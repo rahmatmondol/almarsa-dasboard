@@ -15,9 +15,13 @@ return new class extends Migration
 
         Schema::create('wishlist_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
+            $table->string('name');
+            $table->string('product_id');
+            $table->string('image');
             $table->integer('quantity')->default(1);
-            $table->decimal('amount', 10, 2)->default(0.00);
+            $table->decimal('price', 10, 2)->default(0.00);
+            $table->decimal('discount', 10, 2)->default(0.00);
+            $table->decimal('sub_total', 10, 2)->default(0.00);
             $table->foreignId('wishlist_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

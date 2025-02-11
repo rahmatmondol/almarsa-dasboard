@@ -15,8 +15,10 @@ return new class extends Migration
 
         Schema::create('wishlists', function (Blueprint $table) {
             $table->id();
+            $table->decimal('discount', 10, 2)->default(0.00);
             $table->decimal('sub_total', 10, 2)->default(0.00);
-            $table->decimal('total', 10, 2)->default(0.00);
+            $table->decimal('grand_total', 10, 2)->default(0.00);
+            $table->integer('count')->default(0);
             $table->foreignId('user_id');
             $table->timestamps();
         });

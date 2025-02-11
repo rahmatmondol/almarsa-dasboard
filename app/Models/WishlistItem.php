@@ -16,10 +16,13 @@ class WishlistItem extends Model
      * @var array
      */
     protected $fillable = [
-        'product_id',
         'quantity',
-        'amount',
-        'wishlist_id',
+        'price',
+        'image',
+        'sub_total',
+        'discount',
+        'name',
+        'product_id'
     ];
 
     /**
@@ -28,19 +31,17 @@ class WishlistItem extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'product_id' => 'integer',
-        'amount' => 'decimal:2',
-        'wishlist_id' => 'integer',
+        'name' => 'string',
+        'product_id' => 'string',
+        'quantity' => 'integer',
+        'price' => 'float',
+        'discount' => 'float',
+        'sub_total' => 'float',
+        'image' => 'string',
     ];
 
     public function wishlist(): BelongsTo
     {
         return $this->belongsTo(Wishlist::class);
-    }
-
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
     }
 }

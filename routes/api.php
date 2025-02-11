@@ -8,7 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\api\AboutController;
 use App\Http\Controllers\api\ContactController;
 use App\Http\Controllers\api\OrderController;
-
+use App\Http\Controllers\api\WishlistController;
 
 // guest routes
 Route::group([
@@ -52,6 +52,12 @@ Route::group([
     Route::post('cart', [CartController::class, 'store'])->name('carts.store');
     Route::post('cart-update', [CartController::class, 'update'])->name('carts.update');
     Route::delete('cart/{id}', [CartController::class, 'destroy'])->name('carts.destroy');
+
+    // wishlists routes
+    Route::get('wishlists', [WishlistController::class, 'index'])->name('wishlists.index');
+    Route::post('wishlist', [WishlistController::class, 'store'])->name('wishlists.store');
+    Route::post('wishlist-update', [WishlistController::class, 'update'])->name('wishlists.update');
+    Route::delete('wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlists.destroy');
 
     // orders routes
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
