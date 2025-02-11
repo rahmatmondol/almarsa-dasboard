@@ -64,10 +64,10 @@ Route::group([
 
     // orders routes
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('order/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('order', [OrderController::class, 'store'])->name('orders.store');
-    Route::put('order/{order}', [OrderController::class, 'update'])->name('orders.update');
-    Route::delete('order/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::put('order/{id}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('order/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
 
     // abouts routes

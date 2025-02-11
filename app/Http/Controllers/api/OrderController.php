@@ -111,24 +111,12 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+        $order = auth()->user()->orders()->with('items')->find($id);
+        if (!$order) {
+            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+        }
+        return response()->json(['success' => true, 'message' => 'Order retrieved successfully', 'data' => $order], 200);
     }
 }
