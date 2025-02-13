@@ -88,13 +88,19 @@ class Category extends Model
     public static function getActiveTree()
     {
         return self::query()
-            ->with(['childrenRecursive' => function($query) {
+            ->with(['childrenRecursive' => function ($query) {
                 $query->where('status', 1);
             }])
             ->whereNull('parent_id')
             ->where('status', 1)
             ->orderBy('name')
             ->get();
+    }
+
+
+    public function list(): HasMany
+    {
+        return $this->hasMany(homeList::class);
     }
 
     /**

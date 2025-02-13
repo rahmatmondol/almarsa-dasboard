@@ -11,19 +11,14 @@ use Illuminate\View\View;
 
 class AboutController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(Request $request)
     {
         $abouts = About::all();
 
         return view('about.index', compact('abouts'));
     }
 
-    public function create(Request $request): Response
-    {
-        return view('about.create');
-    }
-
-    public function store(AboutStoreRequest $request): Response
+    public function store(AboutStoreRequest $request)
     {
         $about = About::create($request->validated());
 
@@ -32,28 +27,11 @@ class AboutController extends Controller
         return redirect()->route('abouts.index');
     }
 
-    public function show(Request $request, About $about): Response
-    {
-        return view('about.show', compact('about'));
-    }
-
-    public function edit(Request $request, About $about): Response
-    {
-        return view('about.edit', compact('about'));
-    }
-
-    public function update(AboutUpdateRequest $request, About $about): Response
+    public function update(AboutUpdateRequest $request, About $about)
     {
         $about->update($request->validated());
 
         $request->session()->flash('about.id', $about->id);
-
-        return redirect()->route('abouts.index');
-    }
-
-    public function destroy(Request $request, About $about): Response
-    {
-        $about->delete();
 
         return redirect()->route('abouts.index');
     }
