@@ -9,6 +9,7 @@ use App\Http\Controllers\api\AboutController;
 use App\Http\Controllers\api\ContactController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\WishlistController;
+use App\Http\Controllers\HomeController;
 
 // guest routes
 Route::group([
@@ -69,6 +70,8 @@ Route::group([
     Route::put('order/{id}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('order/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
+    // home page routes
+    Route::get('home', [HomeController::class, 'homePage'])->name('home.index');
 
     // abouts routes
     Route::get('abouts/{about}', [AboutController::class, 'show'])->name('abouts.show');

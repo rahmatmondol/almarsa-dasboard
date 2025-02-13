@@ -20,6 +20,18 @@ class HomeController extends Controller
         return view('home.index', compact('home', 'categories'));
     }
 
+    //homePage
+    public function homePage()
+    {
+        $home = Home::get();
+        return response()->json([
+            'success' => true,
+            'message' => 'List retrieved successfully',
+            'data' => $home->load('items', 'items.category'),
+        ], 200);
+    }
+
+
     //homelist
     public function homelist()
     {
