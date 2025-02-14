@@ -39,15 +39,6 @@ Route::group([
     // Route::put('user/{id}', [AuthController::class, 'update'])->name('users.update');
     // Route::delete('user/{id}', [AuthController::class, 'destroy'])->name('users.destroy');
 
-
-    // categories routes
-    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('category/{id}', [CategoryController::class, 'show'])->name('categories.show');
-
-    // products routes
-    Route::get('products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('product/{id}', [ProductController::class, 'show'])->name('products.show');
-
     // carts routes
     Route::get('carts', [CartController::class, 'index'])->name('carts.index');
     Route::post('cart', [CartController::class, 'store'])->name('carts.store');
@@ -69,17 +60,23 @@ Route::group([
     Route::post('order', [OrderController::class, 'store'])->name('orders.store');
     Route::put('order/{id}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('order/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+});
 
-    // home page routes
+
+// guest routes
+Route::group([
+    'namespace' => 'App\Http\Controllers',
+    'prefix' => 'v1/',
+], function () {
     Route::get('home', [HomeController::class, 'homePage'])->name('home.index');
+    Route::get('about', [AboutController::class, 'show'])->name('abouts.show');
+    Route::get('contact', [ContactController::class, 'show'])->name('contacts.index');
 
-    // abouts routes
-    Route::get('abouts/{about}', [AboutController::class, 'show'])->name('abouts.show');
+    // categories routes
+    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('category/{id}', [CategoryController::class, 'show'])->name('categories.show');
 
-    // contacts routes
-    Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');
-    Route::post('contacts', [ContactController::class, 'store'])->name('contacts.store');
-    Route::put('contacts/{contact}', [ContactController::class, 'update'])->name('contacts.update');
-    Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
-    Route::get('contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+    // products routes
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('product/{id}', [ProductController::class, 'show'])->name('products.show');
 });

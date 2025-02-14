@@ -40,6 +40,16 @@
              </ul>
          </li>
 
+          <li class="sidebar-menu-title">Customers Management</li>
+         <li>
+             <a href="{{ route('customer.index') }}" class="navItem {{ request()->routeIs('customer.*') ? 'active' : '' }}">
+                 <span class="flex items-center">
+                     <iconify-icon class=" nav-icon" icon="heroicons-outline:users"></iconify-icon>
+                     <span>Customers</span>
+                 </span>
+             </a>
+         </li>
+
          <li class="sidebar-menu-title">Settings</li>
          <li class="{{ request()->routeIs('settings.*', 'home.index', 'about.index', 'contact.index') ? 'active' : '' }}">
              <a href="javascript:void(0)" class="navItem">
@@ -52,12 +62,6 @@
              <ul class="sidebar-submenu">
                  <li>
                      <a href="{{ route('home.index') }}">Home page</a>
-                 </li>
-                 <li>
-                     <a href="{{ route('about.index') }}">About page</a>
-                 </li>
-                 <li>
-                     <a href="{{ route('contact.index') }}">Contact page</a>
                  </li>
              </ul>
          </li>

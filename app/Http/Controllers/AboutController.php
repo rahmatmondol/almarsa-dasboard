@@ -13,9 +13,9 @@ class AboutController extends Controller
 {
     public function index(Request $request)
     {
-        $abouts = About::all();
+        $about = About::all();
 
-        return view('about.index', compact('abouts'));
+        return view('about.index', compact('about'));
     }
 
     public function store(AboutStoreRequest $request)
