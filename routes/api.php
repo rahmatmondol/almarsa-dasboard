@@ -18,6 +18,8 @@ Route::group([
 ], function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::post('forget-password', [AuthController::class, 'forgotPassword'])->name('forget-password');
+    Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
 });
 
 Route::group([
@@ -31,7 +33,6 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('update-profile', [AuthController::class, 'updateProfile'])->name('update-profile');
     Route::post('change-password', [AuthController::class, 'changePassword'])->name('change-password');
-    Route::post('forget-password', [AuthController::class, 'forgetPassword'])->name('forget-password');
 
     // users management
     // Route::get('users', [AuthController::class, 'users'])->name('users.index');

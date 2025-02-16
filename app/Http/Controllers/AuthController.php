@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Helpers\ResponseHelper;
+use Carbon\Carbon;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -156,13 +159,66 @@ class AuthController extends Controller
     // Forgot password
     public function forgotPassword(Request $request)
     {
-        // Implement password reset logic
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        try {
+            $user = User::whereEmail($request->email)->first();
+
+            // Generate a token for the user
+            $token = random_int(100000, 999999);
+
+            $existingToken = DB::table('password_reset_tokens')->where('email', $user->email)->first();
+            if ($existingToken) {
+                DB::table('password_reset_tokens')->where('email', $user->email)->update([
+                    'token' => $token,
+                    'created_at' => Carbon::now(),
+                ]);
+            } else {
+                DB::table('password_reset_tokens')->insert([
+                    'email' => $user->email,
+                    'token' => $token,
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+
+            // Send password reset link
+            $user->notify(new ResetPassword($token));
+
+            return response()->json(['success' => true, 'message' => 'Password reset link sent on your email.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     // Reset password
     public function resetPassword(Request $request)
     {
-        // Implement password reset logic
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'code' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $passwordReset = DB::table('password_reset_tokens')->where([
+            'email' => $request->email,
+            'token' => $request->code,
+        ])->first();
+
+        if (!$passwordReset) {
+            return response()->json(['error' => 'Invalid code or email.'], 400);
+        }
+
+        $user = User::whereEmail($request->email)->first();
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
+
+        return response()->json(['success' => true, 'message' => 'Password has been reset successfully.']);
     }
 
     // Change password
@@ -176,17 +232,17 @@ class AuthController extends Controller
 
             // Check if the current password is correct
             if (!Hash::check($request->current_password, auth()->user()->password)) {
-                return ResponseHelper::error('Current password is incorrect', 401);
+                return response()->json(['error' => 'The provided current password is incorrect.'], 401);
             }
 
             auth()->user()->update([
                 'password' => bcrypt($request->password),
             ]);
 
-            return ResponseHelper::success('Password changed successfully');
+            return response()->json(['success' => true, 'message' => 'Password changed successfully']);
         } catch (\Exception $e) {
             // Provide a more descriptive error response if query fails
-            return ResponseHelper::error('Failed to change password: ' . $e->getMessage(), 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
