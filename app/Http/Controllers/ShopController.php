@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Home;
-use App\Models\homeList;
+use App\Models\Shop;
+use App\Models\ShopItem;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class ShopController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,33 +15,33 @@ class HomeController extends Controller
     public function index()
     {
 
-        $home = Home::first();
+        $shop = Shop::first();
         $categories = Category::all();
-        return view('home.index', compact('home', 'categories'));
+        return view('shop.index', compact('shop', 'categories'));
     }
 
-    //homePage
-    public function homePage()
+    //shopPage
+    public function shopPage()
     {
-        $home = Home::get();
+        $shop = Shop::get();
         return response()->json([
             'success' => true,
             'message' => 'List retrieved successfully',
-            'data' => $home->load(['items' => function ($query) {
+            'data' => $shop->load(['items' => function ($query) {
                 $query->where('status', true);
             }, 'items.category']),
         ], 200);
     }
 
 
-    //homelist
-    public function homelist()
+    //shoplist
+    public function shoplist()
     {
-        $list = homeList::with('category')->get();
+        $list = ShopItem::with('category')->get();
         return response()->json([
             'success' => true,
             'message' => 'List retrieved successfully',
-            'data' => $list->load('home', 'category'),
+            'data' => $list->load('shop', 'category'),
         ], 200);
     }
 
@@ -58,20 +58,20 @@ class HomeController extends Controller
         ]);
 
         try {
-            //check if home already exists
-            $home = Home::first();
-            if (!$home) {
-                $home = new Home;
+            //check if shop already exists
+            $shop = Shop::first();
+            if (!$shop) {
+                $shop = new Shop;
             }
 
-            $home->title = $request->title;
-            $home->description = $request->description;
-            $home->save();
+            $shop->title = $request->title;
+            $shop->description = $request->description;
+            $shop->save();
 
             if ($request->hasFile('image')) {
 
-                if ($home->image) {
-                    $relativePath = parse_url($home->image, PHP_URL_PATH);
+                if ($shop->image) {
+                    $relativePath = parse_url($shop->image, PHP_URL_PATH);
                     if (file_exists(public_path($relativePath))) {
                         unlink(public_path($relativePath)); // Deletes the file
                     }
@@ -80,15 +80,15 @@ class HomeController extends Controller
                 $imageFile = $request->file('image');
                 $originalName = $imageFile->getClientOriginalName();
                 $filename = time() . '_' . $originalName;
-                $imageFile->move('uploads/home/', $filename);
-                $home->image = url('uploads/home/' . $filename);
-                $home->save();
+                $imageFile->move('uploads/shop/', $filename);
+                $shop->image = url('uploads/shop/' . $filename);
+                $shop->save();
             }
 
             if ($request->hasFile('icon')) {
 
-                if ($home->icon) {
-                    $relativePath = parse_url($home->icon, PHP_URL_PATH);
+                if ($shop->icon) {
+                    $relativePath = parse_url($shop->icon, PHP_URL_PATH);
                     if (file_exists(public_path($relativePath))) {
                         unlink(public_path($relativePath)); // Deletes the file
                     }
@@ -96,15 +96,15 @@ class HomeController extends Controller
                 $imageFile = $request->file('icon');
                 $originalName = $imageFile->getClientOriginalName();
                 $filename = time() . '_' . $originalName;
-                $imageFile->move('uploads/home/', $filename);
-                $home->icon = url('uploads/home/' . $filename);
-                $home->save();
+                $imageFile->move('uploads/shop/', $filename);
+                $shop->icon = url('uploads/shop/' . $filename);
+                $shop->save();
             }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Home created successfully',
-                'data' => $home,
+                'message' => 'Shop created successfully',
+                'data' => $shop,
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -126,16 +126,16 @@ class HomeController extends Controller
         ]);
 
         try {
-            //check if home already exists
-            $home = Home::first();
-            if (!$home) {
-                $home = Home::create([
-                    'title' => 'home',
+            //check if shop already exists
+            $shop = Shop::first();
+            if (!$shop) {
+                $shop = Shop::create([
+                    'title' => 'shop',
                     'description' => 'description',
                 ]);
             }
 
-            $item = $home->items()->create([
+            $item = $shop->items()->create([
                 'title' => $request->title,
                 'category_id' => $request->category_id,
                 'status' => $request->status,
@@ -145,15 +145,15 @@ class HomeController extends Controller
                 $imageFile = $request->file('icon');
                 $originalName = $imageFile->getClientOriginalName();
                 $filename = time() . '_' . $originalName;
-                $imageFile->move('uploads/home/', $filename);
-                $item->icon = url('uploads/home/' . $filename);
+                $imageFile->move('uploads/shop/', $filename);
+                $item->icon = url('uploads/shop/' . $filename);
                 $item->save();
             }
 
             return response()->json([
                 'success' => true,
                 'message' => 'List created successfully',
-                'data' => $home,
+                'data' => $shop,
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -166,7 +166,7 @@ class HomeController extends Controller
     //list update
     public function listUpdate(Request $request)
     {
-        $list = homeList::find($request->id);
+        $list = ShopItem::find($request->id);
         $list->title = $request->title;
         $list->category_id = $request->category_id;
         $list->status = $request->status;
@@ -184,8 +184,8 @@ class HomeController extends Controller
             $imageFile = $request->file('icon');
             $originalName = $imageFile->getClientOriginalName();
             $filename = time() . '_' . $originalName;
-            $imageFile->move('uploads/home/', $filename);
-            $list->icon = url('uploads/home/' . $filename);
+            $imageFile->move('uploads/shop/', $filename);
+            $list->icon = url('uploads/shop/' . $filename);
             $list->save();
         }
 
@@ -199,13 +199,13 @@ class HomeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Home $home) {}
+    public function update(Request $request, Shop $shop) {}
 
 
     //list delete
     public function listDelete(Request $request)
     {
-        $list = homeList::find($request->id);
+        $list = ShopItem::find($request->id);
         if ($list->icon) {
             $relativePath = parse_url($list->icon, PHP_URL_PATH);
             if (file_exists(public_path($relativePath))) {

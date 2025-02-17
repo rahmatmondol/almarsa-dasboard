@@ -205,4 +205,71 @@ class WixStore
             throw $e;
         }
     }
+
+    /**
+     * search single product from Wix Store
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function searchWixProducts($query)
+    {
+        try {
+            $accessToken = Auth::getAccessToken();
+            if (!$accessToken) {
+                throw new Exception('Failed to obtain valid Wix access token');
+            }
+
+            $filter = json_encode([
+                "name" => [
+                    "\$contains" => [$query]
+                ]
+            ]);
+
+            $response = Http::withOptions([
+                'curl' => [
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false,
+                ],
+                'timeout' => 30,
+            ])
+                ->withHeaders([
+                    'Authorization' => 'Bearer ' . $accessToken,
+                    'Content-Type' => 'application/json',
+                ])
+                ->post(config('services.wix.base_url') . '/stores/v1/products/query', [
+                    "query" => [
+                        "paging" => [
+                            "limit" => $this->limit,
+                            "offset" => $this->offset,
+                        ],
+                        "filter" => $filter,
+                        "includeNumberOfProducts" => true,
+                        "includeDescription" => true,
+                        "includeVariants" => true,
+                    ],
+                ]);
+
+            if (!$response->successful()) {
+                Log::error('Wix API Error', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
+                throw new Exception('API request failed: ' . $response->status());
+            }
+            $data = $response->json();
+
+            if (!isset($data['products'])) {
+                throw new Exception('Invalid response structure from Wix API');
+            }
+
+            // Return just the collections array
+            return $data;
+        } catch (Exception $e) {
+            Log::error('Wix Collections Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
+    }
 }

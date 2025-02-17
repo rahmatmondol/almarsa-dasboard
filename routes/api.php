@@ -10,6 +10,7 @@ use App\Http\Controllers\api\ContactController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\WishlistController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ShopController;
 
 // guest routes
 Route::group([
@@ -70,6 +71,7 @@ Route::group([
     'prefix' => 'v1/',
 ], function () {
     Route::get('home', [HomeController::class, 'homePage'])->name('home.index');
+    Route::get('shop', [ShopController::class, 'shopPage'])->name('shop.index');
     Route::get('about', [AboutController::class, 'show'])->name('abouts.show');
     Route::get('contact', [ContactController::class, 'show'])->name('contacts.index');
 
@@ -80,4 +82,6 @@ Route::group([
     // products routes
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
     Route::get('product/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('product-search', [ProductController::class, 'search'])->name('products.search');
+
 });

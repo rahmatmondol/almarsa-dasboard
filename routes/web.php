@@ -9,8 +9,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CustomerController;
-use App\Models\Contact;
-use Pest\ArchPresets\Custom;
+use App\Http\Controllers\ShopController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -70,6 +69,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/edit/{id}', [HomeController::class, 'update'])->name('home.update');
             Route::post('/list-delete', [HomeController::class, 'listDelete'])->name('home.list.delete');
             Route::post('/list-update', [HomeController::class, 'listUpdate'])->name('home.list.update');
+        });
+
+        //shop routes 
+        Route::group(['prefix' => 'shop'], function () {
+            Route::get('/', [ShopController::class, 'index'])->name('shop.index');
+            Route::post('/store', [ShopController::class, 'store'])->name('shop.store');
+            Route::post('/list-store', [ShopController::class, 'listStore'])->name('shop.list.store');
+            Route::get('/shoplist', [ShopController::class, 'shoplist'])->name('shop.list');
+            Route::post('/edit/{id}', [ShopController::class, 'update'])->name('shop.update');
+            Route::post('/list-delete', [ShopController::class, 'listDelete'])->name('shop.list.delete');
+            Route::post('/list-update', [ShopController::class, 'listUpdate'])->name('shop.list.update');
         });
 
         //about routes 

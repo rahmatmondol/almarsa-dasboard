@@ -83,4 +83,42 @@ class ProductController extends Controller
 
         return response()->json($data, 200);
     }
+
+    // search products
+    public function search(Request $request)
+    {
+        $search = $request->query('search');
+        $limit = $request->query('limit') ?: 20;
+        $offset = $request->query('offset') ?: 1;
+        
+        if (!$search) {
+            return response()->json(['success' => false, 'message' => 'Search term is required'], 400);
+        }
+
+        $wixStore = new WixStore($limit, $offset);
+        $products = $wixStore->searchWixProducts($search);
+
+        $products_data = array_map(function ($product) {
+            return [
+                'id' => $product['id'],
+                'name' => $product['name'],
+                'stock' => $product['stock'],
+                'price' => $product['price'],
+                'discount' => $product['discount'],
+                'ribbon' => $product['ribbon'],
+                'media' => $product['media'],
+            ];
+        }, $products['products']);
+
+        $data = [
+            'success' => true,
+            'message' => 'Products retrieved successfully',
+            'products' => $products_data,
+            'totalResults' => $products['totalResults'],
+            'items' => $products['metadata']['items'],
+            'offset' => $products['metadata']['offset'],
+        ];
+
+        return response()->json($data, 200);
+    }
 }

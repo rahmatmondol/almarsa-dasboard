@@ -51,7 +51,7 @@
          </li>
 
          <li class="sidebar-menu-title">Settings</li>
-         <li class="{{ request()->routeIs('settings.*', 'home.index', 'about.index', 'contact.index') ? 'active' : '' }}">
+         <li class="{{ request()->routeIs('settings.*', 'home.index', 'about.index', 'contact.index', 'shop.index') ? 'active' : '' }}">
              <a href="javascript:void(0)" class="navItem">
                  <span class="flex items-center">
                      <iconify-icon class=" nav-icon" icon="heroicons-outline:wrench-screwdriver"></iconify-icon>
@@ -62,6 +62,9 @@
              <ul class="sidebar-submenu">
                  <li>
                      <a href="{{ route('home.index') }}">Home page</a>
+                 </li>
+                 <li>
+                     <a href="{{ route('shop.index') }}">Shop page</a>
                  </li>
              </ul>
          </li>

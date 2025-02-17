@@ -68,7 +68,7 @@ class Category extends Model
      */
     public function childrenRecursive(): HasMany
     {
-        return $this->children()->with('childrenRecursive');
+        return $this->children()->with('childrenRecursive')->where('status', 1);
     }
 
     /**
