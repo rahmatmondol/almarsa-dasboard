@@ -39,31 +39,31 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="input-area">
+                        <div class="input-area image_area">
                             <label for="image" class="form-label">Category icon</label>
-                            <input id="icon" name="icon" type="file" class="form-control"
-                                onchange="iconPreview(event)">
-                            @if ($category->icon)
-                                <div class="mt-4 relative">
-                                    <img id="icon-preview" src="{{ $category->icon }}" style="max-width: 200px;">
-                                    <button type="button" style="display: none;"
-                                        class="delete-icon-btn btn-danger p-1 rounded-full text-white absolute top-0 right-0"
-                                        onclick="deleteIcon()">x</button>
-                                </div>
-                            @endif
+                            <input id="icon" name="icon" type="file" class="form-control">
+                            <div class="mt-4 relative preview-conteiner">
+                                @if ($category->icon)
+                                    <img class="preview" src="{{ $category->icon }}" style="max-width: 200px;">
+                                @else
+                                    <img class="preview" style="max-width: 200px; display: none;">
+                                @endif
+                                <button type="button" style="display: none;"
+                                    class="delete-image btn-danger p-1 rounded-full text-white absolute top-0 right-0">x</button>
+                            </div>
                         </div>
-                        <div class="input-area">
+                        <div class="input-area image_area">
                             <label for="image" class="form-label">Category Image</label>
-                            <input id="image" name="image" type="file" class="form-control"
-                                onchange="previewImage(event)">
-                            @if ($category->image)
-                                <div class="mt-4 relative">
-                                    <img id="image-preview" src="{{ $category->image }}" style="max-width: 100%;">
-                                    <button type="button" style="display: none;"
-                                        class="delete-image-btn btn-danger p-1 rounded-full text-white absolute top-0 right-0"
-                                        onclick="deleteImage()">x</button>
-                                </div>
-                            @endif
+                            <input id="image" name="image" type="file" class="form-control">
+                            <div class="mt-4 relative preview-conteiner">
+                                @if ($category->image)
+                                    <img class="preview" src="{{ $category->icon }}" style="max-width: 200px;">
+                                @else
+                                    <img class="preview" style="max-width: 200px; display: none;">
+                                @endif
+                                <button type="button" style="display: none;"
+                                    class="delete-image btn-danger p-1 rounded-full text-white absolute top-0 right-0">x</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,38 +108,7 @@
         </div>
     </form>
 
-
     <script>
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                $('#image-preview').attr('src', reader.result).show();
-            };
-            reader.readAsDataURL(event.target.files[0]);
-            $('.delete-image-btn').show();
-        }
-
-        function deleteImage() {
-            $('#image-preview').attr('src', '').hide();
-            $('#icon').val('');
-            $('.delete-image-btn').hide();
-        }
-
-        function iconPreview(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                $('#icon-preview').attr('src', reader.result).show();
-            };
-            reader.readAsDataURL(event.target.files[0]);
-            $('.delete-icon-btn').show();
-        }
-
-        function deleteIcon() {
-            $('#icon-preview').attr('src', '').hide();
-            $('#image').val('');
-            $('.delete-icon-btn').hide();
-        }
-
         $(document).ready(function() {
 
             let limit = 100;
@@ -150,6 +119,46 @@
             $('#select').val({{ $category->parent_id }});
             $('#status').val(status ? 1 : 0);
             // set collection
+
+
+            // defult image
+            $('.image_area').each(function() {
+                const input = $(this).find('input[type="file"]')[0];
+                if (input && input.files.length > 0) {
+                    const file = input.files[0];
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const imgElement = $(this).find('.preview');
+                        imgElement.attr('src', event.target.result).show();
+                        $(this).find('.delete-image').show();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Image preview
+            $(document).on('change', '.image_area input[type="file"]', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imgElement = $(e.target).closest('.image_area').find('.preview');
+                        imgElement.attr('src', event.target.result).show();
+                        $(e.target).closest('.image_area').find('.delete-image').show();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // delete image
+            $(document).on('click', '.delete-image', function(e) {
+                const imgElement = $(e.target).closest('.image_area').find('.preview');
+                imgElement.attr('src', '').hide();
+                $(e.target).closest('.image_area').find('.delete-image').hide();
+                $(e.target).closest('.image_area').find('input[type="file"]').val('');
+            })
+
+
 
             //get wix collections
             $.ajax({

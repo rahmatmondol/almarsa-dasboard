@@ -31,6 +31,7 @@
                             <label for="description" class="form-label">Description</label>
                             <textarea name="description" id="description" rows="5" class="form-control" placeholder="Description">{{ $home->description ?? '' }}</textarea>
                         </div>
+                        
                         <div class="input-area image_area">
                             <label for="icon" class="form-label">Icon</label>
                             <input id="icon" name="icon" type="file" class="form-control">

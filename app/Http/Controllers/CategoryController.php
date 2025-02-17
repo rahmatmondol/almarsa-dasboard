@@ -97,9 +97,11 @@ class CategoryController extends Controller
             // update image
             if ($request->hasFile('image')) {
 
-                $relativePath = parse_url($category->image, PHP_URL_PATH);
-                if (file_exists(public_path($relativePath))) {
-                    unlink(public_path($relativePath)); // Deletes the file
+                if ($category->image) {
+                    $relativePath = parse_url($category->image, PHP_URL_PATH);
+                    if (file_exists(public_path($relativePath))) {
+                        unlink(public_path($relativePath)); // Deletes the file
+                    }
                 }
 
                 $imageFile = $request->file('image');
@@ -113,9 +115,11 @@ class CategoryController extends Controller
             // update icon
             if ($request->hasFile('icon')) {
 
-                $relativePath = parse_url($category->icon, PHP_URL_PATH);
-                if (file_exists(public_path($relativePath))) {
-                    unlink(public_path($relativePath)); // Deletes the file
+                if ($category->icon) {
+                    $relativePath = parse_url($category->icon, PHP_URL_PATH);
+                    if (file_exists(public_path($relativePath))) {
+                        unlink(public_path($relativePath)); // Deletes the file
+                    }
                 }
 
                 $imageFile = $request->file('icon');
@@ -135,7 +139,7 @@ class CategoryController extends Controller
                 200
             );
         } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 
