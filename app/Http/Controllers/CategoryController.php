@@ -11,7 +11,7 @@ use Illuminate\View\View;
 use App\Wix\WixStore;
 use Illuminate\Support\Str;
 use App\Http\Resources\api\CategoryResource;
-
+ 
 class CategoryController extends Controller
 {
     public function index(Request $request): View
