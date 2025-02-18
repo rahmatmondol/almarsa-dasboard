@@ -37,26 +37,23 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="input-area">
+                        <div class="input-area image_area">
                             <label for="image" class="form-label">Category icon</label>
-                            <input id="icon" name="icon" type="file" class="form-control"
-                                onchange="iconPreview(event)">
-                            <div class="mt-4 relative">
-                                <img id="icon-preview" style="max-width: 200px; display: none;">
+                            <input id="icon" name="icon" type="file" class="form-control">
+                            <div class="mt-4 relative preview-conteiner">
+                                <img class="preview" style="max-width: 200px; display: none;">
                                 <button type="button" style="display: none;"
-                                    class="delete-icon-btn btn-danger p-1 rounded-full text-white absolute top-0 right-0"
-                                    onclick="deleteIcon()">x</button>
+                                    class="delete-image btn-danger p-1 rounded-full text-white absolute top-0 right-0">x</button>
                             </div>
                         </div>
-                        <div class="input-area">
+
+                        <div class="input-area image_area">
                             <label for="image" class="form-label">Category Image</label>
-                            <input id="image" name="image" type="file" class="form-control"
-                                onchange="previewImage(event)">
-                            <div class="mt-4 relative">
-                                <img id="image-preview" style="max-width: 100%; display: none;">
+                            <input id="image" name="image" type="file" class="form-control">
+                            <div class="mt-4 relative preview-conteiner">
+                                <img class="preview" style="max-width: 200px; display: none;">
                                 <button type="button" style="display: none;"
-                                    class="delete-image-btn btn-danger p-1 rounded-full text-white absolute top-0 right-0"
-                                    onclick="deleteImage()">x</button>
+                                    class="delete-image btn-danger p-1 rounded-full text-white absolute top-0 right-0">x</button>
                             </div>
                         </div>
                     </div>
@@ -97,52 +94,55 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </form>
 
 
     <script>
-        // image
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                $('#image-preview').attr('src', reader.result).show();
-            };
-            reader.readAsDataURL(event.target.files[0]);
-            $('.delete-image-btn').show();
-        }
-
-        // delete image
-        function deleteImage() {
-            $('#image-preview').attr('src', '').hide();
-            $('#icon').val('');
-            $('.delete-image-btn').hide();
-        }
-
-        // icon
-        function iconPreview(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                $('#icon-preview').attr('src', reader.result).show();
-            };
-            reader.readAsDataURL(event.target.files[0]);
-            $('.delete-icon-btn').show();
-        }
-
-        // delete icon
-        function deleteIcon() {
-            $('#icon-preview').attr('src', '').hide();
-            $('#image').val('');
-            $('.delete-icon-btn').hide();
-        }
-
         // jquery
         $(document).ready(function() {
 
             let limit = 100;
             let offset = 0;
             let collections = [];
+
+
+            // defult image
+            $('.image_area').each(function() {
+                const input = $(this).find('input[type="file"]')[0];
+                if (input && input.files.length > 0) {
+                    const file = input.files[0];
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const imgElement = $(this).find('.preview');
+                        imgElement.attr('src', event.target.result).show();
+                        $(this).find('.delete-image').show();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Image preview
+            $(document).on('change', '.image_area input[type="file"]', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imgElement = $(e.target).closest('.image_area').find('.preview');
+                        imgElement.attr('src', event.target.result).show();
+                        $(e.target).closest('.image_area').find('.delete-image').show();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // delete image
+            $(document).on('click', '.delete-image', function(e) {
+                const imgElement = $(e.target).closest('.image_area').find('.preview');
+                imgElement.attr('src', '').hide();
+                $(e.target).closest('.image_area').find('.delete-image').hide();
+                $(e.target).closest('.image_area').find('input[type="file"]').val('');
+            })
 
             //get wix collections
             $.ajax({
@@ -286,6 +286,9 @@
             // Submit Form
             $('#category-form').on('submit', function(e) {
                 e.preventDefault();
+
+                //add loading icon in submit button
+                $('#category-form').find('button[type="submit"]').html('saving...');
                 var formData = new FormData(this);
                 $.ajax({
                     type: 'POST',
@@ -295,8 +298,8 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        console.log(response);
                         if (response.success) {
+                            $('#category-form').find('button[type="submit"]').html('Save');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',

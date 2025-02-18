@@ -333,6 +333,7 @@
             // Submit Form
             $('#banner-form').on('submit', function(e) {
                 e.preventDefault();
+                 $('#banner-form').find('button[type="submit"]').html('saving...');
                 var formData = new FormData(this);
                 $.ajax({
                     type: 'POST',
@@ -342,8 +343,8 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        console.log(response);
                         if (response.success) {
+                            $('#banner-form').find('button[type="submit"]').html('Save');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',
@@ -372,6 +373,7 @@
             // list form
             $('#list-form').on('submit', function(e) {
                 e.preventDefault();
+                $('#list-form').find('button[type="submit"]').html('saving...');
                 var formData = new FormData(this);
                 $.ajax({
                     url: "{{ route('home.list.store') }}",
@@ -381,6 +383,7 @@
                     processData: false,
                     success: function(response) {
                         if (response.success) {
+                            $('#list-form').find('button[type="submit"]').html('Save');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',
@@ -467,6 +470,7 @@
             // list update
             $('#update-list').on('submit', function(e) {
                 e.preventDefault();
+                $('#update-list').find('button[type="submit"]').html('updating...');
                 var formData = new FormData(this);
                 $.ajax({
                     url: "{{ route('home.list.update') }}",
@@ -476,6 +480,7 @@
                     processData: false,
                     success: function(response) {
                         if (response.success) {
+                             $('#update-list').find('button[type="submit"]').html('Update');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',

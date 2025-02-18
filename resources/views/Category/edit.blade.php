@@ -52,6 +52,7 @@
                                     class="delete-image btn-danger p-1 rounded-full text-white absolute top-0 right-0">x</button>
                             </div>
                         </div>
+
                         <div class="input-area image_area">
                             <label for="image" class="form-label">Category Image</label>
                             <input id="image" name="image" type="file" class="form-control">
@@ -308,6 +309,7 @@
             // Submit Form
             $('#category-form').on('submit', function(e) {
                 e.preventDefault();
+                $('#category-form').find('button[type="submit"]').html('updating...');
                 var formData = new FormData(this);
                 $.ajax({
                     type: 'post',
@@ -317,8 +319,8 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        console.log(response);
                         if (response.success) {
+                            $('#category-form').find('button[type="submit"]').html('Update');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',
