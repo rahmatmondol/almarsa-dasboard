@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- BEGIN: Breadcrumb -->
-    <div class="mb-5">
+    <div class="mb-5 ">
         <div class="flex justify-between space-x-2 items-center">
             <ul class="m-0 p-0 list-none">
                 <li class="inline-block relative top-[3px] text-base text-primary-500 font-Inter ">
@@ -13,7 +13,49 @@
                 <li class="inline-block relative text-sm text-slate-500 font-Inter dark:text-white">
                     Oreders</li>
             </ul>
+            <div class="flex flex-col items-end">
+                <form action="{{ route('order.list') }}" method="GET">
+                    <select name="status" id="basicSelect" class="form-control w-full mt-2"
+                        onchange="this.form.submit()">
+                        <option selected="Selected" disabled="disabled" value="none"
+                            class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">Filter Orders
+                        </option>
+                        <option value="all" class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">
+                            All
+                        </option>
+                        <option value="completed"
+                            class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">
+                            Completed
+                        </option>
+                        <option value="cancelled"
+                            class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">
+                            Cancelled
+                        </option>
+                        <option value="pending" class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">
+                            Pending
+                        </option>
+                        <option value="Processing"
+                            class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">
+                            Processing
+                        </option>
+                        <option value="Failed" class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">
+                            Failed
+                        </option>
+                        <option value="Refunded"
+                            class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">
+                            Refunded
+                        </option>
+                        <option value="Payment_pending"
+                            class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">
+                            Payment Pending
+                        </option>
+                    </select>
+            </div>
+            </form>
         </div>
+
+
+
     </div>
     <!-- END: BreadCrumb -->
 

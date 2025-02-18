@@ -18,9 +18,30 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::withCount('items')->latest()->get();
+        $status = $request->query('status');
+
+        $orders = Order::withCount('items')->latest();
+
+        if ($status === 'completed') {
+            $orders->where('status', 'Completed');
+        } elseif ($status === 'cancelled') {
+            $orders->where('status', 'cancelled');
+        } elseif ($status === 'pending') {
+            $orders->where('status', 'pending');
+        } elseif ($status === 'Processing') {
+            $orders->where('status', 'Processing');
+        } elseif ($status === 'Failed') {
+            $orders->where('status', 'Failed');
+        } elseif ($status === 'Refunded') {
+            $orders->where('status', 'Refunded');
+        } elseif ($status === 'Payment_pending') {
+            $orders->where('status', 'Payment_pending');
+        }
+
+        $orders = $orders->get();
+
         return view('orders.index', compact('orders'));
     }
 
@@ -60,7 +81,7 @@ class OrderController extends Controller
     public function pdf(Order $order)
     {
         $order->load('items', 'user');
-       
+
         return view('orders.invoice', compact('order'));
     }
 
