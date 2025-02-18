@@ -3,17 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryStoreRequest;
-use App\Http\Requests\CategoryUpdateRequest;
-use App\Http\Resources\api\CategoryCollection;
-use App\Http\Resources\api\CategoryResource;
 use App\Models\Category;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\Http;
 use App\Wix\WixStore;
-
 
 class CategoryController extends Controller
 {
@@ -22,6 +14,20 @@ class CategoryController extends Controller
     {
         // Get only active categories
         $activeCategories = Category::getActiveTree();
+
+        if (!$activeCategories) {
+            return response()->json(['success' => false, 'message' => 'No categories found'], 404);
+        }
+
+        $activeCategories->transform(function ($category) {
+            if (!$category->image) {
+                $category->image = url('assets/images/all-categories.png');
+            }
+            if (!$category->icon) {
+                $category->icon = url('assets/images/all-categories-icon.png');
+            }
+            return $category;
+        });
 
         return response()->json($activeCategories, 200);
     }
@@ -32,6 +38,13 @@ class CategoryController extends Controller
 
         if (!$category) {
             return response()->json(['success' => false, 'message' => 'Category not found'], 404);
+        }
+
+        if (!$category->image) {
+            $category->image = url('assets/images/all-categories.png');
+        }
+        if (!$category->icon) {
+            $category->icon = url('assets/images/all-categories-icon.png');
         }
 
         $limit = $request->query('limit') ?: 20;

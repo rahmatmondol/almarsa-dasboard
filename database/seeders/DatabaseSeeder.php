@@ -23,12 +23,19 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345678'),
         ]);
 
+        $superAdmin = \App\Models\User::factory()->create([
+            'name' => 'rahmat mondol',
+            'email' => 'rahmat.mondol007@gmail.com',
+            'password' => bcrypt('Ra01713754417'),
+        ]);
+
         $adminRole = Role::create(['name' => 'admin']);
+        $superAdminRole = Role::create(['name' => 'super-admin']);
         $userRole = Role::create(['name' => 'customer']);
 
         $permissions = Permission::all();
         $adminRole->givePermissionTo($permissions);
         $admin->assignRole($adminRole);
+        $superAdmin->assignRole($superAdminRole);
     }
 }
-

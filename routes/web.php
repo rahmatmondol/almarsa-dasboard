@@ -8,7 +8,10 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardControlller;
+use App\Http\Controllers\Notification;
 use App\Http\Controllers\ShopController;
 
 Route::get('/', function () {
@@ -18,9 +21,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardControlller::class, 'index'])->name('dashboard');
 
     Route::get('/logout', function () {
         auth()->logout();
@@ -28,6 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name(
         'logout'
     );
+
+    // notification Routes
+    Route::get('/notification-delete', [Notification::class, 'delete'])->name('notification.delete');
+    Route::get('/notification', [Notification::class, 'read'])->name('notification');
 
     //customer routes
     Route::group(['prefix' => 'customer'], function () {
@@ -56,6 +61,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('order.list');
         Route::get('/show/{order}', [OrderController::class, 'show'])->name('order.show');
         Route::get('/edit/{order}', [OrderController::class, 'edit'])->name('order.edit');
+        Route::get('/update/{order}', [OrderController::class, 'update'])->name('order.update');
+        Route::get('/invoice/{order}', [OrderController::class, 'pdf'])->name('order.invoice');
         Route::delete('/destroy/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
     });
 

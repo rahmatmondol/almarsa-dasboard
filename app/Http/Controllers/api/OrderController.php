@@ -5,17 +5,25 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\FirebaseDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+
+    public $firebaseDatabase;
+    public function __construct(FirebaseDatabase $firebaseDatabase)
+    {
+        $this->firebaseDatabase = $firebaseDatabase;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $oredrs = auth()->user()->orders()->with('items')->get();
+        $oredrs = auth()->user()->orders()->with('items')->latest()->get();
         $data = [
             'status' => 'success',
             'message' => 'Orders retrieved successfully',
@@ -47,7 +55,7 @@ class OrderController extends Controller
         ]);
 
         // create order
-        // DB::beginTransaction();
+        DB::beginTransaction();
         try {
             $order = auth()->user()->orders()->create([
                 'first_name' => $request->first_name,
@@ -98,7 +106,64 @@ class OrderController extends Controller
                 'count' => $order->items->sum('quantity')
             ]);
 
-            return  $order;
+            // firebase notification
+            $this->firebaseDatabase->create('/notifications/admin', [
+                'created_at' => now(),
+                'read_at' => false,
+                'data' => [
+                    'url' => 'order/show/' . $order->id,
+                    'avatar' => auth()->user()->image,
+                    'name' => auth()->user()->name,
+                    'message' => auth()->user()->name . ' has placed a order',
+                ],
+                'title' => 'New order placed',
+            ]);
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Order created successfully', 'data' => $order], 201);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Something went wrong', 'error' => $th->getMessage()], 500);
+        }
+    }
+
+
+    // order to cart
+    public function orderAgain(Request $request)
+    {
+        $order = auth()->user()->orders()->with('items')->find($request->order_id);
+
+        if (!$order) {
+            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+        }
+        $order = $order->makeHidden('created_at', 'updated_at', 'deleted_at', 'user_id', 'status');
+
+        // create order
+        DB::beginTransaction();
+        try {
+            $newOrder = auth()->user()->orders()->create($order->toArray());
+
+            if (!$newOrder) {
+                return response()->json(['success' => false, 'message' => 'cannot create order please try again'], 500);
+            }
+
+
+            foreach ($order->items as $item) {
+                $newOrder->items()->create($item->toArray());
+            }
+
+            // firebase notification
+            $this->firebaseDatabase->create('/notifications/admin', [
+                'created_at' => now(),
+                'read_at' => false,
+                'data' => [
+                    'url' => 'order/show/' . $order->id,
+                    'avatar' => auth()->user()->image,
+                    'name' => auth()->user()->name,
+                    'message' => auth()->user()->name . ' has made order again',
+                ],
+                'title' => 'New order placed',
+            ]);
 
             DB::commit();
             return response()->json(['success' => true, 'message' => 'Order created successfully', 'data' => $order], 201);

@@ -68,15 +68,52 @@
                                                 {{ $order->created_at->diffForHumans() }}
                                             </td>
                                             <td class="table-td ">{{ $order->user->name }}</td>
-                                            <td class="table-td ">{{ $order->status }}</td>
+                                            <td class="table-td ">
+                                                @if ($order->status == 'processing')
+                                                    <span
+                                                        class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-primary-500 bg-primary-500">
+                                                        {{ ucfirst($order->status) }}
+                                                    </span>
+                                                @elseif ($order->status == 'completed')
+                                                    <span
+                                                        class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-success-500 bg-success-500">
+                                                        {{ ucfirst($order->status) }}
+                                                    </span>
+                                                @elseif ($order->status == 'cancelled')
+                                                    <span
+                                                        class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-danger-500 bg-danger-500">
+                                                        {{ ucfirst($order->status) }}
+                                                    </span>
+                                                @elseif ($order->status == 'refunded')
+                                                    <span
+                                                        class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-warning-500 bg-warning-500">
+                                                        {{ ucfirst($order->status) }}
+                                                    </span>
+                                                @elseif ($order->status == 'failed')
+                                                    <span
+                                                        class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-danger-500 bg-danger-500">
+                                                        {{ ucfirst($order->status) }}
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 text-secondary-500 bg-secondary-500">
+                                                        {{ ucfirst($order->status) }}
+                                                    </span>
+                                                @endif
+                                            </td>
                                             <td class="table-td ">{{ $order->grand_total }}</td>
                                             <td class="table-td ">{{ $order->items_count }}</td>
                                             <td class="table-td ">
                                                 <div class="flex space-x-3 rtl:space-x-reverse">
-                                                    <a href="{{ route('order.show', $order->id) }}"
-                                                        class="action-btn" type="button">
+                                                    <a href="{{ route('order.show', $order->id) }}" class="action-btn"
+                                                        type="button">
                                                         <iconify-icon icon="heroicons:eye"></iconify-icon>
                                                     </a>
+                                                    <a href="{{ route('order.invoice', $order->id) }}" target="_blank"
+                                                        class="action-btn" type="button">
+                                                        <iconify-icon icon="heroicons:document"></iconify-icon>
+                                                    </a>
+
                                                 </div>
                                             </td>
                                         </tr>

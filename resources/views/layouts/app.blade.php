@@ -19,16 +19,19 @@
     <!-- End : Theme CSS-->
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}" sync></script>
     <script src="{{ asset('assets/js/settings.js') }}" sync></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 </head>
 
 <body class=" font-inter dashcode-app" id="body_class">
     <!-- [if IE]> <p class="browserupgrade"> You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security. </p> <![endif] -->
     <main class="app-wrapper">
+        @include('layouts.partials.firebase')
         <!-- BEGIN: Sidebar -->
         @include('layouts.partials.sidebar')
         <!-- End: Sidebar -->
-
-
         <div class="flex flex-col justify-between min-h-screen">
             <div>
                 <!-- BEGIN: Header -->

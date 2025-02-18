@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Helpers\ResponseHelper;
+use App\Services\FirebaseDatabase;
 use Carbon\Carbon;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,13 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+
+    public $firebaseDatabase;
+    public function __construct(FirebaseDatabase $firebaseDatabase)
+    {
+        $this->firebaseDatabase = $firebaseDatabase;
+    }
+
     // Register
     public function register(Request $request)
     {
@@ -33,6 +41,7 @@ class AuthController extends Controller
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => bcrypt($validated['password']),
+                'image' => url('/assets/images/avatar/av-1.svg'),
             ]);
 
             // asing role
@@ -45,6 +54,57 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'User registered successfully',
                 'token' => $token,
+                'user' => $user
+            ];
+
+            // send notification to admin
+            $this->firebaseDatabase->create('/notifications/admin', [
+                'created_at' => now(),
+                'read_at' => false,
+                'data' => [
+                    'url' => 'customer/show/' . $user->id,
+                    'avatar' =>  $user->image,
+                    'name' =>  $user->name,
+                    'message' =>  $user->name . ' is a new registered customer',
+                ],
+                'title' => 'New Customer Registered',
+            ]);
+
+            return response()->json($data, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // register admin
+    public function registerAdmin(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // check user role
+        if (!auth()->user()->hasRole('super-admin')) {
+            return response()->json(['error' => 'Only admin users can register new admin users.'], 403);
+        }
+
+        try {
+            // Create the user
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => bcrypt($validated['password']),
+                'image' => url('/assets/images/avatar/av-1.svg'),
+            ]);
+
+            // asing role
+            $user->assignRole('admin');
+
+            $data = [
+                'success' => true,
+                'message' => 'Admin registered successfully',
                 'user' => $user
             ];
 
@@ -124,9 +184,11 @@ class AuthController extends Controller
             if ($request->hasFile('image')) {
 
                 if ($user->image) {
-                    $relativePath = parse_url($user->image, PHP_URL_PATH);
-                    if (file_exists(public_path($relativePath))) {
-                        unlink(public_path($relativePath)); // Deletes the file
+                    if ($user->image != url('/assets/images/avatar/av-1.svg')) {
+                        $relativePath = parse_url($user->image, PHP_URL_PATH);
+                        if (file_exists(public_path($relativePath))) {
+                            unlink(public_path($relativePath)); // Deletes the file
+                        }
                     }
                 }
 

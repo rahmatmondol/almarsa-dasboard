@@ -34,6 +34,7 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('update-profile', [AuthController::class, 'updateProfile'])->name('update-profile');
     Route::post('change-password', [AuthController::class, 'changePassword'])->name('change-password');
+    Route::post('register-admin', [AuthController::class, 'registerAdmin'])->name('register-admin');
 
     // users management
     // Route::get('users', [AuthController::class, 'users'])->name('users.index');
@@ -55,10 +56,11 @@ Route::group([
 
     //wish to cart
     Route::post('wish-to-cart', [WishlistController::class, 'addToCart'])->name('wishlists.addToCart');
+    Route::post('order-again', [OrderController::class, 'orderAgain'])->name('order.again');
 
     // orders routes
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('order/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('order/{id}', [OrderController::class, 'show'])->name('order.show');
     Route::post('order', [OrderController::class, 'store'])->name('orders.store');
     Route::put('order/{id}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('order/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
@@ -83,5 +85,4 @@ Route::group([
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
     Route::get('product/{id}', [ProductController::class, 'show'])->name('products.show');
     Route::get('product-search', [ProductController::class, 'search'])->name('products.search');
-
 });

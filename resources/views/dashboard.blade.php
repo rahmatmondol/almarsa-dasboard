@@ -1,902 +1,170 @@
 <x-app-layout>
-    <div>
-        <div class="flex justify-between flex-wrap items-center mb-6">
-            <h4
-                class="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4 mb-4 sm:mb-0 flex space-x-3 rtl:space-x-reverse">
-                Dashboard</h4>
-        </div>
-        
-        <div class="grid grid-cols-12 gap-5 mb-5">
-            <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
-                <div class="p-4 card">
-                    <div class="grid md:grid-cols-3 col-span-1 gap-4">
-                        <!-- BEGIN: Group Chart2 -->
+    <div class="py-8 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Total Orders Card -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Orders</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $totalOrders }}</p>
+                    </div>
+                    <div class="p-3 bg-indigo-50 rounded-full">
+                        <svg class="w-6 h-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <span class="text-green-500 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                            </svg>
+                            {{ $orderGrowth }}%
+                        </span>
+                        <span class="text-gray-500 ml-2">from last month</span>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="py-[18px] px-4 rounded-[6px] bg-[#E5F9FF] dark:bg-slate-900	 ">
-                            <div class="flex items-center space-x-6 rtl:space-x-reverse">
-                                <div class="flex-none">
-                                    <div id="wline1"></div>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="text-slate-800 dark:text-slate-300 text-sm mb-1 font-medium">
-                                        Totel revenue
-                                    </div>
-                                    <div class="text-slate-900 dark:text-white text-lg font-medium">
-                                        3,564
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Total Customers Card -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Customers</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $totalCustomers }}</p>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-full">
+                        <svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <span class="text-green-500 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                            </svg>
+                            {{ $customerGrowth }}%
+                        </span>
+                        <span class="text-gray-500 ml-2">from last month</span>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="py-[18px] px-4 rounded-[6px] bg-[#FFEDE5] dark:bg-slate-900	 ">
-                            <div class="flex items-center space-x-6 rtl:space-x-reverse">
-                                <div class="flex-none">
-                                    <div id="wline2"></div>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="text-slate-800 dark:text-slate-300 text-sm mb-1 font-medium">
-                                        Products sold
-                                    </div>
-                                    <div class="text-slate-900 dark:text-white text-lg font-medium">
-                                        564
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="py-[18px] px-4 rounded-[6px] bg-[#EAE5FF] dark:bg-slate-900	 ">
-                            <div class="flex items-center space-x-6 rtl:space-x-reverse">
-                                <div class="flex-none">
-                                    <div id="wline3"></div>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="text-slate-800 dark:text-slate-300 text-sm mb-1 font-medium">
-                                        Growth
-                                    </div>
-                                    <div class="text-slate-900 dark:text-white text-lg font-medium">
-                                        +5.0%
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- END: Group Chart2 -->
+            <!-- Total Categories Card -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Categories</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $totalCategories }}</p>
+                    </div>
+                    <div class="p-3 bg-purple-50 rounded-full">
+                        <svg class="w-6 h-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <span class="text-gray-500">Active categories</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-12 gap-5">
-            <div class="lg:col-span-8 col-span-12">
-                <div class="card">
-                    <div class="card-body p-6">
-                        <div class="legend-ring">
-                            <div id="revenue-barchart"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Recent Orders -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    @foreach ($recentOrders as $order)
+                        <div class="p-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div
+                                            class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                                <line x1="3" y1="6" x2="21" y2="6">
+                                                </line>
+                                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-900">Order #{{ $order->id }}</p>
+                                        <p class="text-sm text-gray-500">{{ $order->customer_name }}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-900">${{ number_format($order->grand_total, 2) }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">{{ $order->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
+                </div>
+                <div class="bg-gray-50 px-6 py-4">
+                    <a href="{{ route('order.list') }}"
+                        class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View all orders →</a>
                 </div>
             </div>
-            <div class="lg:col-span-4 col-span-12">
-                <div class="card">
-                    <header class="card-header">
-                        <h4 class="card-title">Overview</h4>
-                        <div>
-                            <!-- BEGIN: Card Dropdown -->
-                            <div class="relative">
-                                <div class="dropdown relative">
-                                    <button class="text-xl text-center block w-full " type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span
-                                            class="text-lg inline-flex h-6 w-6 flex-col items-center justify-center border border-slate-200 dark:border-slate-700  rounded dark:text-slate-400">
-                                            <iconify-icon icon="heroicons-outline:dots-horizontal"></iconify-icon>
-                                        </span>
-                                    </button>
-                                    <ul
-                                        class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700 shadow z-[2] overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last 28 Days</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600  dark:hover:text-white">
-                                                Last Month</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last Year</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- END: Card Droopdown -->
-                        </div>
-                    </header>
-                    <div class="card-body p-6">
-                        <div id="radial-bar"></div>
-                    </div>
+
+            <!-- Recent Customers -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900">Recent Customers</h2>
                 </div>
-            </div>
-            <div class="lg:col-span-8 col-span-12">
-                <div class="card">
-                    <header class="card-header noborder">
-                        <h4 class="card-title">All Company</h4>
-                        <div>
-                            <!-- BEGIN: Card Dropdown -->
-                            <div class="relative">
-                                <div class="dropdown relative">
-                                    <button class="text-xl text-center block w-full " type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span
-                                            class="text-lg inline-flex h-6 w-6 flex-col items-center justify-center border border-slate-200 dark:border-slate-700 rounded dark:text-slate-400">
-                                            <iconify-icon icon="heroicons-outline:dots-horizontal"></iconify-icon>
-                                        </span>
-                                    </button>
-                                    <ul
-                                        class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700 shadow z-[2] overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600  dark:hover:text-white">
-                                                Last 28 Days</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last Month</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last Year</a>
-                                        </li>
-                                    </ul>
+                <div class="divide-y divide-gray-200">
+                    @foreach ($recentCustomers as $customer)
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <img class="h-10 w-10 rounded-full object-cover" src="{{ $customer->image }}"
+                                    alt="{{ $customer->name }}">
+                                <div class="ml-4">
+                                    <p class="text-sm font-medium text-gray-900">{{ $customer->first_name }}
+                                        {{ $customer->last_name }}</p>
+                                    <p class="text-sm text-gray-500">{{ $customer->email }}</p>
                                 </div>
-                            </div>
-                            <!-- END: Card Droopdown -->
-                        </div>
-                    </header>
-                    <div class="card-body p-6">
-
-                        <!-- BEGIN: Company Table -->
-
-
-                        <div class="overflow-x-auto -mx-6">
-                            <div class="inline-block min-w-full align-middle">
-                                <div class="overflow-hidden ">
-                                    <table
-                                        class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
-                                        <thead class="  bg-slate-200 dark:bg-slate-700">
-                                            <tr>
-
-                                                <th scope="col" class=" table-th ">
-                                                    Company
-                                                </th>
-
-                                                <th scope="col" class=" table-th ">
-                                                    Category
-                                                </th>
-
-                                                <th scope="col" class=" table-th ">
-                                                    Sales
-                                                </th>
-
-                                                <th scope="col" class=" table-th ">
-                                                    Views
-                                                </th>
-
-                                                <th scope="col" class=" table-th ">
-                                                    revenue
-                                                </th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody
-                                            class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
-
-                                            <tr>
-                                                <td class="table-td">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-none">
-                                                            <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                                                <img src=assets/images/users/user-1.jpg alt=""
-                                                                    class="w-full h-full rounded-[100%] object-cover">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-1 text-start">
-                                                            <h4
-                                                                class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                                                Biffco Enterprises Ltd.
-                                                            </h4>
-                                                            <div
-                                                                class="text-xs font-normal text-slate-600 dark:text-slate-400">
-                                                                Biffco@example.com
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td">Technology</td>
-                                                <td class="table-td ">
-                                                    <div class="flex space-x-6 items-center rtl:space-x-reverse">
-                                                        <span>
-                                                            95%</span>
-                                                        <span class=" text-xl  text-danger-500 ">
-
-                                                            <iconify-icon
-                                                                icon="heroicons-outline:trending-down"></iconify-icon>
-
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td ">343</td>
-                                                <td class="table-td ">$231.26</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="table-td">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-none">
-                                                            <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                                                <img src=assets/images/users/user-2.jpg alt=""
-                                                                    class="w-full h-full rounded-[100%] object-cover">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-1 text-start">
-                                                            <h4
-                                                                class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                                                Biffco Enterprises Ltd.
-                                                            </h4>
-                                                            <div
-                                                                class="text-xs font-normal text-slate-600 dark:text-slate-400">
-                                                                Biffco@example.com
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td">Technology</td>
-                                                <td class="table-td ">
-                                                    <div class="flex space-x-6 items-center rtl:space-x-reverse">
-                                                        <span>
-                                                            197%</span>
-                                                        <span class=" text-xl  text-success-500 ">
-
-                                                            <iconify-icon
-                                                                icon="heroicons-outline:trending-up"></iconify-icon>
-
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td ">315</td>
-                                                <td class="table-td ">$432.81</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="table-td">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-none">
-                                                            <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                                                <img src=assets/images/users/user-3.jpg alt=""
-                                                                    class="w-full h-full rounded-[100%] object-cover">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-1 text-start">
-                                                            <h4
-                                                                class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                                                Biffco Enterprises Ltd.
-                                                            </h4>
-                                                            <div
-                                                                class="text-xs font-normal text-slate-600 dark:text-slate-400">
-                                                                Biffco@example.com
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td">Technology</td>
-                                                <td class="table-td ">
-                                                    <div class="flex space-x-6 items-center rtl:space-x-reverse">
-                                                        <span>
-                                                            137%</span>
-                                                        <span class=" text-xl  text-success-500 ">
-
-                                                            <iconify-icon
-                                                                icon="heroicons-outline:trending-up"></iconify-icon>
-
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td ">329</td>
-                                                <td class="table-td ">$437.65</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="table-td">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-none">
-                                                            <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                                                <img src=assets/images/users/user-4.jpg alt=""
-                                                                    class="w-full h-full rounded-[100%] object-cover">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-1 text-start">
-                                                            <h4
-                                                                class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                                                Biffco Enterprises Ltd.
-                                                            </h4>
-                                                            <div
-                                                                class="text-xs font-normal text-slate-600 dark:text-slate-400">
-                                                                Biffco@example.com
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td">Technology</td>
-                                                <td class="table-td ">
-                                                    <div class="flex space-x-6 items-center rtl:space-x-reverse">
-                                                        <span>
-                                                            101%</span>
-                                                        <span class=" text-xl  text-success-500 ">
-
-                                                            <iconify-icon
-                                                                icon="heroicons-outline:trending-up"></iconify-icon>
-
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td ">336</td>
-                                                <td class="table-td ">$387.55</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="table-td">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-none">
-                                                            <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                                                <img src=assets/images/users/user-5.jpg alt=""
-                                                                    class="w-full h-full rounded-[100%] object-cover">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-1 text-start">
-                                                            <h4
-                                                                class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                                                Biffco Enterprises Ltd.
-                                                            </h4>
-                                                            <div
-                                                                class="text-xs font-normal text-slate-600 dark:text-slate-400">
-                                                                Biffco@example.com
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td">Technology</td>
-                                                <td class="table-td ">
-                                                    <div class="flex space-x-6 items-center rtl:space-x-reverse">
-                                                        <span>
-                                                            99%</span>
-                                                        <span class=" text-xl  text-danger-500 ">
-
-                                                            <iconify-icon
-                                                                icon="heroicons-outline:trending-down"></iconify-icon>
-
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td ">375</td>
-                                                <td class="table-td ">$489.80</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="table-td">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-none">
-                                                            <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                                                <img src=assets/images/users/user-6.jpg alt=""
-                                                                    class="w-full h-full rounded-[100%] object-cover">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-1 text-start">
-                                                            <h4
-                                                                class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                                                Biffco Enterprises Ltd.
-                                                            </h4>
-                                                            <div
-                                                                class="text-xs font-normal text-slate-600 dark:text-slate-400">
-                                                                Biffco@example.com
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td">Technology</td>
-                                                <td class="table-td ">
-                                                    <div class="flex space-x-6 items-center rtl:space-x-reverse">
-                                                        <span>
-                                                            101%</span>
-                                                        <span class=" text-xl  text-success-500 ">
-
-                                                            <iconify-icon
-                                                                icon="heroicons-outline:trending-up"></iconify-icon>
-
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td class="table-td ">490</td>
-                                                <td class="table-td ">$421.45</td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
+                                <div class="ml-auto">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $customer->orders_count > 0 ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                        {{ $customer->orders_count }} orders
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <!-- END: Company Table -->
-                    </div>
+                    @endforeach
                 </div>
-            </div>
-            <div class="lg:col-span-4 col-span-12">
-                <div class="card ">
-                    <div class="card-header ">
-                        <h4 class="card-title">Recent Activity</h4>
-                        <div>
-                            <!-- BEGIN: Card Dropdown -->
-                            <div class="relative">
-                                <div class="dropdown relative">
-                                    <button class="text-xl text-center block w-full " type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span
-                                            class="text-lg inline-flex h-6 w-6 flex-col items-center justify-center border border-slate-200 dark:border-slate-700  rounded dark:text-slate-400">
-                                            <iconify-icon icon="heroicons-outline:dots-horizontal"></iconify-icon>
-                                        </span>
-                                    </button>
-                                    <ul
-                                        class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700  shadow z-[2] overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600  dark:hover:text-white">
-                                                Last 28 Days</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last Month</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last Year</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- END: Card Droopdown -->
-                        </div>
-                    </div>
-                    <div class="card-body p-6">
-
-                        <!-- BEGIN: Activity Card -->
-
-                        <div>
-                            <ul class="list-item space-y-3 h-full overflow-x-auto">
-
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-1.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-2.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-3.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-4.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-5.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-6.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-1.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-2.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li
-                                    class="flex items-center space-x-3 rtl:space-x-reverse border-b border-slate-100 dark:border-slate-700 last:border-b-0 pb-3 last:pb-0">
-                                    <div>
-                                        <div class="w-8 h-8 rounded-[100%]">
-                                            <img src=assets/images/users/user-3.jpg alt=""
-                                                class="w-full h-full rounded-[100%] object-cover">
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
-                                        <div
-                                            class="text-sm text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">
-                                            Finance KPI Mobile app launch preparion meeting.
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <div class="text-sm font-light text-slate-400 dark:text-slate-400">
-                                            1 hours
-                                        </div>
-                                    </div>
-                                </li>
-
-                            </ul>
-                        </div>
-                        <!-- END: Activity Card -->
-
-
-
-                    </div>
-                </div>
-            </div>
-            <div class="lg:col-span-8 col-span-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Most Sales</h4>
-                        <div>
-                            <!-- BEGIN: Card Dropdown -->
-                            <div class="relative">
-                                <div class="dropdown relative">
-                                    <button class="text-xl text-center block w-full " type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span
-                                            class="text-lg inline-flex h-6 w-6 flex-col items-center justify-center border border-slate-200 dark:border-slate-700 rounded dark:text-slate-400">
-                                            <iconify-icon icon="heroicons-outline:dots-horizontal"></iconify-icon>
-                                        </span>
-                                    </button>
-                                    <ul
-                                        class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700 shadow z-[2] overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last 28 Days</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600  dark:hover:text-white">
-                                                Last Month</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last Year</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- END: Card Droopdown -->
-                        </div>
-                    </div>
-                    <div class="card-body p-6">
-
-                        <!-- BEGIN: Most Sale -->
-
-
-
-                        <div class="md:flex items-center">
-                            <div class="grow-0">
-                                <h4 class="text-slate-600 dark:text-slate-200 text-sm font-normal mb-[6px]">
-                                    Total earnings
-                                </h4>
-
-                                <div class="text-lg font-medium mb-[6px] dark:text-white text-slate-900">
-                                    $12,65,64787.00
-                                </div>
-
-
-                                <div class="text-xs font-light dark:text-slate-200">
-                                    <span class="text-primary-500">+08%</span> From last
-                                    month
-                                </div>
-                                <ul class="bg-slate-50 dark:bg-slate-900 rounded p-4 min-w-[184px] space-y-5 mt-4">
-
-
-
-                                    <li class="flex justify-between text-xs text-slate-600 dark:text-slate-300">
-                                        <span class="flex space-x-2 rtl:space-x-reverse items-center">
-                                            <span
-                                                class="inline-flex h-[6px] w-[6px] bg-primary-500 ring-opacity-25 rounded-full ring-4 bg-primary-500 ring-primary-500 "></span>
-                                            <span>Nevada</span>
-                                        </span>
-                                        <span>$125k</span>
-                                    </li>
-
-
-                                    <li class="flex justify-between text-xs text-slate-600 dark:text-slate-300">
-                                        <span class="flex space-x-2 rtl:space-x-reverse items-center">
-                                            <span
-                                                class="inline-flex h-[6px] w-[6px] bg-primary-500 ring-opacity-25 rounded-full ring-4 bg-success-500 ring-success-500 "></span>
-                                            <span>Colorado</span>
-                                        </span>
-                                        <span>$$325k</span>
-                                    </li>
-
-
-                                    <li class="flex justify-between text-xs text-slate-600 dark:text-slate-300">
-                                        <span class="flex space-x-2 rtl:space-x-reverse items-center">
-                                            <span
-                                                class="inline-flex h-[6px] w-[6px] bg-primary-500 ring-opacity-25 rounded-full ring-4 bg-info-500 ring-info-50"></span>
-                                            <span>Iowa</span>
-                                        </span>
-                                        <span>$67</span>
-                                    </li>
-
-
-                                    <li class="flex justify-between text-xs text-slate-600 dark:text-slate-300">
-                                        <span class="flex space-x-2 rtl:space-x-reverse items-center">
-                                            <span
-                                                class="inline-flex h-[6px] w-[6px] bg-primary-500 ring-opacity-25 rounded-full ring-4 bg-warning-500 ring-warning-50"></span>
-                                            <span>Arkansas</span>
-                                        </span>
-                                        <span>$354k</span>
-                                    </li>
-
-
-                                    <li class="flex justify-between text-xs text-slate-600 dark:text-slate-300">
-                                        <span class="flex space-x-2 rtl:space-x-reverse items-center">
-                                            <span
-                                                class="inline-flex h-[6px] w-[6px] bg-primary-500 ring-opacity-25 rounded-full ring-4 bg-success-500 ring-success-500"></span>
-                                            <span>Wyoming</span>
-                                        </span>
-                                        <span>$195k</span>
-                                    </li>
-
-
-                                    <li class="flex justify-between text-xs text-slate-600 dark:text-slate-300">
-                                        <span class="flex space-x-2 rtl:space-x-reverse items-center">
-                                            <span
-                                                class="inline-flex h-[6px] w-[6px] bg-primary-500 ring-opacity-25 rounded-full ring-4 bg-secondary-500 ring-secondary-500"></span>
-                                            <span>Other countries</span>
-                                        </span>
-                                        <span>$295k</span>
-                                    </li>
-
-                                </ul>
-                            </div>
-                            <div class=" grow">
-                                <div class="h-[360px] w-full bg-white dark:bg-slate-800 ltr:pl-10 rtl:pr-10">
-                                    <div id="world-map" class="h-full w-full"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END: Most Sale -->
-                    </div>
-                </div>
-            </div>
-            <div class="lg:col-span-4 col-span-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Overview</h4>
-                        <div>
-                            <!-- BEGIN: Card Dropdown -->
-                            <div class="relative">
-                                <div class="dropdown relative">
-                                    <button class="text-xl text-center block w-full " type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span
-                                            class="text-lg inline-flex h-6 w-6 flex-col items-center justify-center border border-slate-200 dark:border-slate-700  rounded dark:text-slate-400">
-                                            <iconify-icon icon="heroicons-outline:dots-horizontal"></iconify-icon>
-                                        </span>
-                                    </button>
-                                    <ul
-                                        class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700 shadow z-[2] overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last 28 Days</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last Month</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white">
-                                                Last Year</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- END: Card Droopdown -->
-                        </div>
-                    </div>
-                    <div class="card-body p-6">
-                        <div id="radar-home-chart"></div>
-                        <div class="bg-slate-50 dark:bg-slate-900 rounded p-4 mt-8 flex justify-between flex-wrap">
-                            <div class="space-y-1">
-                                <h4 class="text-slate-600 dark:text-slate-200 text-xs font-normal">
-                                    Invested amount
-                                </h4>
-                                <div class="text-sm font-medium text-slate-900 dark:text-white">
-                                    $8264.35
-                                </div>
-                                <div class="text-slate-500 dark:text-slate-300 text-xs font-normal">
-                                    +0.001.23 (0.2%)
-                                </div>
-                            </div>
-                            <div class="space-y-1">
-                                <h4 class="text-slate-600 dark:text-slate-200 text-xs font-normal">
-                                    Invested amount
-                                </h4>
-                                <div class="text-sm font-medium text-slate-900 dark:text-white">
-                                    $8264.35
-                                </div>
-                            </div>
-                            <div class="space-y-1">
-                                <h4 class="text-slate-600 dark:text-slate-200 text-xs font-normal">
-                                    Invested amount
-                                </h4>
-                                <div class="text-sm font-medium text-slate-900 dark:text-white">
-                                    $8264.35
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="bg-gray-50 px-6 py-4">
+                    <a href="{{ route('customer.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View all customers →</a>
                 </div>
             </div>
         </div>

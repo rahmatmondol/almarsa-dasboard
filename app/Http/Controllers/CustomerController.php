@@ -12,7 +12,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $users = User::role('customer')->with('orders')->get();
+        $users = User::role('customer')->with('orders')->latest()->get();
         $total_spent = $users->map(function ($user) {
             return $user->orders->sum('grand_total');
         });
@@ -38,8 +38,9 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $user = User::where('id', $id)->with('orders')->first();
-        return view('customer.show', compact('user'));
+        $customer = User::where('id', $id)->with('orders')->first();
+        // return $user;
+        return view('customer.show', compact('customer'));
     }
 
     // edit
