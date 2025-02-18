@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Helpers\ResponseHelper;
+use App\Notifications\ResetPassword as NotificationsResetPassword;
 use App\Services\FirebaseDatabase;
 use Carbon\Carbon;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -246,7 +247,7 @@ class AuthController extends Controller
             }
 
             // Send password reset link
-            $user->notify(new ResetPassword($token));
+            $user->notify(new NotificationsResetPassword($token));
 
             return response()->json(['success' => true, 'message' => 'Password reset link sent on your email.']);
         } catch (\Exception $e) {
