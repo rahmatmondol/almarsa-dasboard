@@ -136,7 +136,38 @@ class OrderController extends Controller
         if (!$order) {
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
         }
-        $order = $order->makeHidden('created_at', 'updated_at', 'deleted_at', 'user_id', 'status');
+
+        $order = $order->makeHidden('created_at', 'updated_at', 'deleted_at', 'user_id', 'status', 'id');
+
+        //if have different shipping address
+        if ($request->has('first_name')) {
+            $order['shipping_first_name'] = $request->first_name;
+        }
+        if ($request->has('last_name')) {
+            $order['shipping_last_name'] = $request->last_name;
+        }
+        if ($request->has('phone')) {
+            $order['shipping_phone'] = $request->phone;
+        }
+        if ($request->has('address')) {
+            $order['shipping_address'] = $request->address;
+        }
+        if ($request->has('address2')) {
+            $order['shipping_address2'] = $request->address2;
+        }
+        if ($request->has('city')) {
+            $order['shipping_city'] = $request->city;
+        }
+        if ($request->has('state')) {
+            $order['shipping_state'] = $request->state;
+        }
+        if ($request->has('country')) {
+            $order['shipping_country'] = $request->country;
+        }
+        if ($request->has('postal_code')) {
+            $order['shipping_postal_code'] = $request->postal_code;
+        }
+
 
         // create order
         DB::beginTransaction();
@@ -157,7 +188,7 @@ class OrderController extends Controller
                 'created_at' => now(),
                 'read_at' => false,
                 'data' => [
-                    'url' => 'order/show/' . $order->id,
+                    'url' => 'order/show/' . $newOrder->id,
                     'avatar' => auth()->user()->image,
                     'name' => auth()->user()->name,
                     'message' => auth()->user()->name . ' has made order again',
@@ -166,7 +197,7 @@ class OrderController extends Controller
             ]);
 
             DB::commit();
-            return response()->json(['success' => true, 'message' => 'Order created successfully', 'data' => $order], 201);
+            return response()->json(['success' => true, 'message' => 'Order created successfully', 'data' => $newOrder->load('items')], 201);
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => 'Something went wrong', 'error' => $th->getMessage()], 500);

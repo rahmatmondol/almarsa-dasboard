@@ -15,7 +15,7 @@
              <h3 class="text-sm font-Inter font-medium text-slate-700 dark:text-white">
                  Notifications</h3>
          </div>
-         <div class="widget-recently"></div>
+         <div class="widget-recently" style="height: 300px; overflow-y: scroll;"></div>
      </div>
  </div>
  <!-- END: Notification Dropdown -->
@@ -33,13 +33,13 @@
              let notifications = '';
              let count = '';
              if (data) {
-                 Object.entries(data).forEach(([key, value]) => {
+                 const notificationArray = Object.entries(data).map(([key, value]) => {
                      if (value.read_at == false) {
                          dayjs.extend(dayjs_plugin_relativeTime);
-
+                         
                          let timeAgo = dayjs(value.created_at).fromNow();
                          count++;
-                         notifications += `<div class="text-slate-600 dark:text-slate-300 block w-full px-4 py-2 text-sm">
+                         return `<div class="text-slate-600 dark:text-slate-300 block w-full px-4 py-2 text-sm">
                             <div class="flex ltr:text-left rtl:text-right relative">
                                 <div class="flex-none ltr:mr-3 rtl:ml-3">
                                     <div class="h-8 w-8 bg-white rounded-full">
@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-1">
-                                    <a href="notification-delete/?key=${key}&url=${value.data.url}"
+                                    <a href="{{ url('/notification-delete') }}?key=${key}&url=${value.data.url}"
                                         class="text-slate-600 dark:text-slate-300 text-sm font-medium mb-1 before:w-full before:h-full before:absolute  before:top-0 before:left-0">
                                         ${value.data.name}
                                         </a>
@@ -60,10 +60,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        `
+                        </div>`;
                      }
-                 });
+                 }).filter(Boolean);
+                 
+                 notifications = notificationArray.reverse().join('');
              }
              if (count == 0) {
                  $('#notification_count').text(count).css('visibility', 'hidden');
