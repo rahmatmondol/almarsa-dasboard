@@ -165,6 +165,7 @@ class AuthController extends Controller
             'address2' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:255'],
             'postal_code' => ['required', 'max:255'],
             'phone' => ['required', 'unique:users,phone,' . auth()->user()->id],
             'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
@@ -179,6 +180,7 @@ class AuthController extends Controller
             $user->city = $request->city ?? null;
             $user->country = $request->country ?? null;
             $user->postal_code = $request->postal_code ?? null;
+            $user->state = $request->state ?? null;
             $user->phone = $request->phone ?? null;
             $user->save();
 

@@ -38,8 +38,7 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $customer = User::where('id', $id)->with('orders')->first();
-        // return $user;
+        $customer = User::where('id', $id)->with(['orders', 'cart', 'cart.items', 'wishlist', 'wishlist.items'])->first();
         return view('customer.show', compact('customer'));
     }
 

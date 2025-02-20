@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/rt-plugins.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+
     <!-- End : Theme CSS-->
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}" sync></script>
     <script src="{{ asset('assets/js/settings.js') }}" sync></script>

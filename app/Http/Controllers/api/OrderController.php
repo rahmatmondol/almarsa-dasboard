@@ -57,6 +57,20 @@ class OrderController extends Controller
         // create order
         DB::beginTransaction();
         try {
+
+            //update user shipping address
+            auth()->user()->update([
+                'shipping_first_name' => $request->first_name,
+                'shipping_last_name' => $request->last_name,
+                'shipping_address' => $request->address,
+                'shipping_address2' => $request->address2,
+                'shipping_city' => $request->city,
+                'shipping_country' => $request->country,
+                'shipping_state' => $request->state,
+                'shipping_postal_code' => $request->postal_code,
+                'shipping_phone' => $request->phone
+            ]);
+
             $order = auth()->user()->orders()->create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -142,30 +156,39 @@ class OrderController extends Controller
         //if have different shipping address
         if ($request->has('first_name')) {
             $order['shipping_first_name'] = $request->first_name;
+            auth()->user()->update(['shipping_first_name' => $request->first_name]);
         }
         if ($request->has('last_name')) {
             $order['shipping_last_name'] = $request->last_name;
+            auth()->user()->update(['shipping_last_name' => $request->last_name]);
         }
         if ($request->has('phone')) {
             $order['shipping_phone'] = $request->phone;
+            auth()->user()->update(['shipping_phone' => $request->phone]);
         }
         if ($request->has('address')) {
             $order['shipping_address'] = $request->address;
+            auth()->user()->update(['shipping_address' => $request->address]);
         }
         if ($request->has('address2')) {
             $order['shipping_address2'] = $request->address2;
+            auth()->user()->update(['shipping_address2' => $request->address2]);
         }
         if ($request->has('city')) {
             $order['shipping_city'] = $request->city;
+            auth()->user()->update(['shipping_city' => $request->city]);
         }
         if ($request->has('state')) {
             $order['shipping_state'] = $request->state;
+            auth()->user()->update(['shipping_state' => $request->state]);
         }
         if ($request->has('country')) {
             $order['shipping_country'] = $request->country;
+            auth()->user()->update(['shipping_country' => $request->country]);
         }
         if ($request->has('postal_code')) {
             $order['shipping_postal_code'] = $request->postal_code;
+            auth()->user()->update(['shipping_postal_code' => $request->postal_code]);
         }
 
 

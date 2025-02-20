@@ -101,10 +101,10 @@
                                     </div>
                                 </td>
                                 <td style="text-align: center; padding: 0.5rem;">{{ $item->quantity }}</td>
-                                <td style="text-align: right; padding: 0.5rem;">${{ number_format($item->price, 2) }}
+                                <td style="text-align: right; padding: 0.5rem;">{{ number_format($item->price, 2) }}
                                 </td>
                                 <td style="text-align: right; padding: 0.5rem;">
-                                    ${{ number_format($item->sub_total, 2) }}</td>
+                                    {{ number_format($item->sub_total, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -118,22 +118,22 @@
                         <div
                             style="display: flex; justify-content: space-between; color: #4b5563; margin-bottom: 0.5rem;">
                             <span>Subtotal</span>
-                            <span>${{ $order->sub_total }}</span>
+                            <span> OMR {{ $order->sub_total }}</span>
                         </div>
                         <div
                             style="display: flex; justify-content: space-between; color: #4b5563; margin-bottom: 0.5rem;">
                             <span>Shipping</span>
-                            <span>${{ $order->shipping_cost }}</span>
+                            <span> OMR {{ $order->shipping_cost }}</span>
                         </div>
                         <div
                             style="display: flex; justify-content: space-between; color: #4b5563; margin-bottom: 0.5rem;">
                             <span>Discount</span>
-                            <span>-${{ $order->discount }}</span>
+                            <span>- OMR {{ $order->discount }}</span>
                         </div>
                         <div
                             style="display: flex; justify-content: space-between; font-weight: 600; color: #111827; padding-top: 0.5rem; border-top: 1px solid #e5e7eb;">
                             <span>Total</span>
-                            <span>${{ $order->grand_total }}</span>
+                            <span> OMR {{ $order->grand_total }}</span>
                         </div>
                     </div>
                 </div>

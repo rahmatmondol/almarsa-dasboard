@@ -22,8 +22,20 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->string('postal_code')->nullable();
-            $table->string('image')->nullable();
+            $table->string('state')->nullable();
             $table->string('phone')->nullable();
+            
+            $table->string('shipping_first_name')->nullable();
+            $table->string('shipping_last_name')->nullable();
+            $table->string('shipping_address')->nullable();
+            $table->string('shipping_address2')->nullable();
+            $table->string('shipping_city')->nullable();
+            $table->string('shipping_country')->nullable();
+            $table->string('shipping_state')->nullable();
+            $table->string('shipping_postal_code')->nullable();
+            $table->string('shipping_phone')->nullable();
+            
+            $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

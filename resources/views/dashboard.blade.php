@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-sm font-medium text-gray-900">${{ number_format($order->grand_total, 2) }}
+                                    <p class="text-sm font-medium text-gray-900">OMR {{ number_format($order->grand_total, 2) }}
                                     </p>
                                     <p class="text-xs text-gray-500">{{ $order->created_at->diffForHumans() }}</p>
                                 </div>

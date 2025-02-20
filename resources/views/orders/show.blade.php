@@ -95,12 +95,12 @@
                                     <div class="mt-1 flex items-center text-sm text-gray-500">
                                         <span>Qty: {{ $item->quantity }}</span>
                                         <span class="mx-2">•</span>
-                                        <span>${{ number_format($item->price, 2) }} each</span>
+                                        <span>OMR {{ number_format($item->price, 2) }} each</span>
                                     </div>
                                 </div>
                                 <div class="text-right">
                                     <p class="text-sm font-medium text-gray-900">
-                                        ${{ number_format($item->sub_total, 2) }}</p>
+                                        OMR {{ number_format($item->sub_total, 2) }}</p>
                                 </div>
                             </div>
                         @endforeach
@@ -112,13 +112,13 @@
                     <dl class="space-y-4">
                         <div class="flex justify-between">
                             <dt class="text-sm text-gray-600">Subtotal</dt>
-                            <dd class="text-sm font-medium text-gray-900">${{ number_format($order->sub_total, 2) }}
+                            <dd class="text-sm font-medium text-gray-900">OMR {{ number_format($order->sub_total, 2) }}
                             </dd>
                         </div>
                         @if ($order->discount > 0)
                             <div class="flex justify-between">
                                 <dt class="text-sm text-gray-600">Discount</dt>
-                                <dd class="text-sm font-medium text-red-600">-${{ number_format($order->discount, 2) }}
+                                <dd class="text-sm font-medium text-red-600">-OMR {{ number_format($order->discount, 2) }}
                                 </dd>
                             </div>
                         @endif
@@ -126,13 +126,13 @@
                             <div class="flex justify-between">
                                 <dt class="text-sm text-gray-600">Shipping</dt>
                                 <dd class="text-sm font-medium text-gray-900">
-                                    ${{ number_format($order->shipping_cost, 2) }}</dd>
+                                    OMR {{ number_format($order->shipping_cost, 2) }}</dd>
                             </div>
                         @endif
                         <div class="flex justify-between border-t border-gray-200 pt-4">
                             <dt class="text-base font-medium text-gray-900">Total</dt>
                             <dd class="text-base font-medium text-gray-900">
-                                ${{ number_format($order->grand_total, 2) }}</dd>
+                                OMR {{ number_format($order->grand_total, 2) }}</dd>
                         </div>
                     </dl>
                 </div>

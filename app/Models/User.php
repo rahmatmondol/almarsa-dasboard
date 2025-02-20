@@ -11,10 +11,11 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles,SoftDeletes;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -33,8 +34,18 @@ class User extends Authenticatable implements JWTSubject
         'city',
         'country',
         'postal_code',
+        'state',
         'phone',
         'image',
+        'shipping_first_name',
+        'shipping_last_name',
+        'shipping_address',
+        'shipping_address2',
+        'shipping_city',
+        'shipping_country',
+        'shipping_state',
+        'shipping_postal_code',
+        'shipping_phone',
     ];
 
     /**
@@ -59,7 +70,7 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
-     /**
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -83,7 +94,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Wishlist::class);
     }
 
-        /**
+    /**
      * Get the identifier that will be stored in the JWT.
      *
      * @return mixed
