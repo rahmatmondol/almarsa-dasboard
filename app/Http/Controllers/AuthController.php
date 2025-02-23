@@ -138,8 +138,33 @@ class AuthController extends Controller
         }
 
         $user = auth()->user();
-
-        return response()->json(compact('token', 'user'));
+        $wishlists_count = $user->wishlist->items->count();
+        $cart_count = $user->cart->items->count();
+        $user = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'address' => $user->address,
+            'address2' => $user->address2,
+            'city' => $user->city,
+            'country' => $user->country,
+            'state' => $user->state,
+            'postal_code' => $user->postal_code,
+            'image' => $user->image,
+            'phone' => $user->phone,
+            'shipping_first_name' => $user->shipping_first_name,
+            'shipping_last_name' => $user->shipping_last_name,
+            'shipping_address' => $user->shipping_address,
+            'shipping_address2' => $user->shipping_address2,
+            'shipping_city' => $user->shipping_city,
+            'shipping_country' => $user->shipping_country,
+            'shipping_state' => $user->shipping_state,
+            'shipping_postal_code' => $user->shipping_postal_code,
+            'shipping_phone' => $user->shipping_phone,
+        ];
+        return response()->json(compact('token', 'user', 'wishlists_count', 'cart_count'));
     }
 
     // Logout

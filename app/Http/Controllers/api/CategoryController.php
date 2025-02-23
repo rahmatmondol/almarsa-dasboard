@@ -35,6 +35,7 @@ class CategoryController extends Controller
     public function show(Request $request, $id)
     {
         $category = Category::find($id);
+        $subcategories = Category::where('parent_id', $id)->get() ?? [];
 
         if (!$category) {
             return response()->json(['success' => false, 'message' => 'Category not found'], 404);
@@ -73,6 +74,7 @@ class CategoryController extends Controller
             'totalResults' => $products['totalResults'],
             'items' => $products['metadata']['items'],
             'offset' => $products['metadata']['offset'],
+            'subcategories' => $subcategories
         ];
 
         return response()->json($data, 200);
