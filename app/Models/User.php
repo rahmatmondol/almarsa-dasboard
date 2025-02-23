@@ -28,24 +28,12 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'first_name',
         'last_name',
-        'email',
-        'address',
-        'address2',
-        'city',
-        'country',
-        'postal_code',
-        'state',
         'phone',
+        'sent_offers',
+        'newsletter',
+        'notifications',
         'image',
-        'shipping_first_name',
-        'shipping_last_name',
-        'shipping_address',
-        'shipping_address2',
-        'shipping_city',
-        'shipping_country',
-        'shipping_state',
-        'shipping_postal_code',
-        'shipping_phone',
+        'gender',
     ];
 
     /**
@@ -92,6 +80,11 @@ class User extends Authenticatable implements JWTSubject
     public function wishlist(): HasOne
     {
         return $this->hasOne(Wishlist::class);
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
     }
 
     /**

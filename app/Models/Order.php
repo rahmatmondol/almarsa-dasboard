@@ -18,6 +18,7 @@ class Order extends Model
      */
     protected $fillable = [
         'user_id',
+        'address_id',
         'status',
         'sub_total',
         'discount',
@@ -28,15 +29,6 @@ class Order extends Model
         'shipping_cost',
         'payment_method',
         'payment_reference',
-        'shipping_first_name',
-        'shipping_last_name',
-        'shipping_address',
-        'shipping_address2',
-        'shipping_city',
-        'shipping_country',
-        'shipping_state',
-        'shipping_postal_code',
-        'shipping_phone',
     ];
 
     /**
@@ -46,6 +38,7 @@ class Order extends Model
      */
     protected $casts = [
         'user_id' => 'integer',
+        'address_id' => 'integer',
         'status' => 'string',
         'sub_total' => 'decimal:2',
         'discount' => 'decimal:2',
@@ -55,15 +48,6 @@ class Order extends Model
         'shipping_cost' => 'decimal:2',
         'payment_method' => 'string',
         'payment_reference' => 'string',
-        'shipping_first_name' => 'string',
-        'shipping_last_name' => 'string',
-        'shipping_address' => 'string',
-        'shipping_address2' => 'string',
-        'shipping_city' => 'string',
-        'shipping_country' => 'string',
-        'shipping_state' => 'string',
-        'shipping_postal_code' => 'string',
-        'shipping_phone' => 'string',
     ];
 
     public function user(): BelongsTo
@@ -74,5 +58,10 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
     }
 }

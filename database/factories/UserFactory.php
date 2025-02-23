@@ -24,11 +24,6 @@ class UserFactory extends Factory
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'email' => $this->faker->safeEmail(),
-            'address' => $this->faker->word(),
-            'address2' => $this->faker->secondaryAddress(),
-            'city' => $this->faker->city(),
-            'country' => $this->faker->country(),
-            'postal_code' => $this->faker->postcode(),
             'phone' => $this->faker->phoneNumber(),
         ];
     }

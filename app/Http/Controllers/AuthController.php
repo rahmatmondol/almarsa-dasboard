@@ -186,27 +186,18 @@ class AuthController extends Controller
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
-            'address2' => ['required', 'string', 'max:255'],
-            'city' => ['required', 'string', 'max:255'],
-            'country' => ['required', 'string', 'max:255'],
-            'state' => ['required', 'string', 'max:255'],
-            'postal_code' => ['required', 'max:255'],
             'phone' => ['required', 'unique:users,phone,' . auth()->user()->id],
-            'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ]);
 
         try {
             $user = auth()->user();
             $user->first_name = $request->first_name ?? null;
             $user->last_name = $request->last_name ?? null;
-            $user->address = $request->address ?? null;
-            $user->address2 = $request->address2 ?? null;
-            $user->city = $request->city ?? null;
-            $user->country = $request->country ?? null;
-            $user->postal_code = $request->postal_code ?? null;
-            $user->state = $request->state ?? null;
             $user->phone = $request->phone ?? null;
+            $user->gender = $request->gender ?? 'male';
+            $user->sent_offers = $request->offers ?? true;
+            $user->newsletter = $request->newsletter ?? true;
+            $user->notifications = $request->notifications ?? true;
             $user->save();
 
             if ($request->hasFile('image')) {

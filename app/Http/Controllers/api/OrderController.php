@@ -23,7 +23,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $oredrs = auth()->user()->orders()->with('items')->latest()->get();
+        $oredrs = auth()->user()->orders()->with('items', 'address')->latest()->get();
         $data = [
             'status' => 'success',
             'message' => 'Orders retrieved successfully',
@@ -45,55 +45,15 @@ class OrderController extends Controller
         }
 
         $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'address' => 'required|string',
-            'address2' => 'required|string',
-            'city' => 'required|string',
-            'country' => 'required|string',
-            'phone' => 'required|string',
+            'address_id' => 'required|string',
         ]);
 
         // create order
         DB::beginTransaction();
         try {
-
-            //update user shipping address
-            auth()->user()->update([
-                'shipping_first_name' => $request->first_name,
-                'shipping_last_name' => $request->last_name,
-                'shipping_address' => $request->address,
-                'shipping_address2' => $request->address2,
-                'shipping_city' => $request->city,
-                'shipping_country' => $request->country,
-                'shipping_state' => $request->state,
-                'shipping_postal_code' => $request->postal_code,
-                'shipping_phone' => $request->phone
-            ]);
-
             $order = auth()->user()->orders()->create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'address' => $request->address,
-                'address2' => $request->address2,
-                'city' => $request->city,
-                'country' => $request->country,
-                'phone' => $request->phone,
-                'shipping_first_name' => $request->first_name,
-                'shipping_last_name' => $request->last_name,
-                'shipping_address' => $request->address,
-                'shipping_address2' => $request->address2,
-                'shipping_city' => $request->city,
-                'shipping_country' => $request->country,
-                'shipping_state' => $request->state,
-                'shipping_postal_code' => $request->postal_code,
-                'shipping_phone' => $request->phone
+                'address_id' => $request->address_id
             ]);
-
-            if (!$order) {
-                return response()->json(['success' => false, 'message' => 'cannot create order please try again'], 500);
-            }
-
 
             // create order items
             foreach ($cart->items as $item) {
@@ -145,6 +105,11 @@ class OrderController extends Controller
     // order to cart
     public function orderAgain(Request $request)
     {
+        $request->validate([
+            'order_id' => 'required|string',
+            'address_id' => 'required|string',
+        ]);
+
         $order = auth()->user()->orders()->with('items')->find($request->order_id);
 
         if (!$order) {
@@ -152,45 +117,7 @@ class OrderController extends Controller
         }
 
         $order = $order->makeHidden('created_at', 'updated_at', 'deleted_at', 'user_id', 'status', 'id');
-
-        //if have different shipping address
-        if ($request->has('first_name')) {
-            $order['shipping_first_name'] = $request->first_name;
-            auth()->user()->update(['shipping_first_name' => $request->first_name]);
-        }
-        if ($request->has('last_name')) {
-            $order['shipping_last_name'] = $request->last_name;
-            auth()->user()->update(['shipping_last_name' => $request->last_name]);
-        }
-        if ($request->has('phone')) {
-            $order['shipping_phone'] = $request->phone;
-            auth()->user()->update(['shipping_phone' => $request->phone]);
-        }
-        if ($request->has('address')) {
-            $order['shipping_address'] = $request->address;
-            auth()->user()->update(['shipping_address' => $request->address]);
-        }
-        if ($request->has('address2')) {
-            $order['shipping_address2'] = $request->address2;
-            auth()->user()->update(['shipping_address2' => $request->address2]);
-        }
-        if ($request->has('city')) {
-            $order['shipping_city'] = $request->city;
-            auth()->user()->update(['shipping_city' => $request->city]);
-        }
-        if ($request->has('state')) {
-            $order['shipping_state'] = $request->state;
-            auth()->user()->update(['shipping_state' => $request->state]);
-        }
-        if ($request->has('country')) {
-            $order['shipping_country'] = $request->country;
-            auth()->user()->update(['shipping_country' => $request->country]);
-        }
-        if ($request->has('postal_code')) {
-            $order['shipping_postal_code'] = $request->postal_code;
-            auth()->user()->update(['shipping_postal_code' => $request->postal_code]);
-        }
-
+        $order['address_id'] = $request->address_id;
 
         // create order
         DB::beginTransaction();
@@ -232,7 +159,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = auth()->user()->orders()->with('items')->find($id);
+        $order = auth()->user()->orders()->with('items', 'address')->find($id);
         if (!$order) {
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
         }

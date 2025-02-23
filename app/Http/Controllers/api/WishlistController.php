@@ -66,7 +66,7 @@ class WishlistController extends Controller
             $wishlistItem = $wishlist->items()->create([
                 'name' => $product['name'],
                 'product_id' => $product['id'],
-                'image' => $product['media']['mainMedia']['thumbnail']['url'],
+                'image' => $product['media']['mainMedia']['image']['url'],
                 'quantity' => $request->quantity,
                 'price' => $product['price']['price'],
                 'discount' => $product['price']['price'] - $product['price']['discountedPrice'],

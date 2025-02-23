@@ -17,24 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('address')->nullable();
-            $table->string('address2')->nullable();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->string('state')->nullable();
             $table->string('phone')->nullable();
-            
-            $table->string('shipping_first_name')->nullable();
-            $table->string('shipping_last_name')->nullable();
-            $table->string('shipping_address')->nullable();
-            $table->string('shipping_address2')->nullable();
-            $table->string('shipping_city')->nullable();
-            $table->string('shipping_country')->nullable();
-            $table->string('shipping_state')->nullable();
-            $table->string('shipping_postal_code')->nullable();
-            $table->string('shipping_phone')->nullable();
-            
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->boolean('sent_offers')->default(true);
+            $table->boolean('newsletter')->default(true);
+            $table->boolean('notifications')->default(true);
+
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

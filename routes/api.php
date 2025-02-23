@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\api\CategoryController;
@@ -64,6 +65,12 @@ Route::group([
     Route::post('order', [OrderController::class, 'store'])->name('orders.store');
     Route::put('order/{id}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('order/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
+    // address routes
+    Route::get('get-addresses', [AddressController::class, 'index'])->name('addresses.index');
+    Route::post('add-address', [AddressController::class, 'store'])->name('addresses.store');
+    Route::post('update-address/{id}', [AddressController::class, 'update'])->name('addresses.store');
+    Route::delete('delete-address/{id}', [AddressController::class, 'destroy'])->name('addresses.store');
 });
 
 
