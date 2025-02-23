@@ -21,12 +21,7 @@ class CategoryStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'image' => ['image'],
-            'icon' => ['image'],
             'status' => ['required', 'boolean'],
-            'product_count' => ['integer'],
-            'description' => ['required', 'string'],
-            'collection_id' => ['required', 'string'],
         ];
     }
 }

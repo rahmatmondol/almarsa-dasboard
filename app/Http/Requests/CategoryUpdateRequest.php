@@ -21,8 +21,6 @@ class CategoryUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'collection_id' => ['required', 'string'],
         ];
     }
 }

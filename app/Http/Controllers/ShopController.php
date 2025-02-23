@@ -50,13 +50,6 @@ class ShopController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'image' => 'image',
-            'icon' => 'image',
-        ]);
-
         try {
             //check if shop already exists
             $shop = Shop::first();
