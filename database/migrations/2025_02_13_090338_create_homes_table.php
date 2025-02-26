@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('homes', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description');
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
             $table->string('icon')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();

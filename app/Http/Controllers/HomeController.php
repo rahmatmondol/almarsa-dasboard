@@ -57,8 +57,8 @@ class HomeController extends Controller
                 $home = new Home;
             }
 
-            $home->title = $request->title;
-            $home->description = $request->description;
+            $home->title = $request->title ?? '';
+            $home->description = $request->description ?? '';
             $home->save();
 
             if ($request->hasFile('image')) {
