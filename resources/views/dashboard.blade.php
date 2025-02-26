@@ -6,7 +6,7 @@
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-600">Total Orders</p>
+                        <p class="text-sm font-medium text-gray-600">Total Order</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $totalOrders }}</p>
                     </div>
                     <div class="p-3 bg-indigo-50 rounded-full">
