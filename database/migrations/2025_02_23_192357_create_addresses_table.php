@@ -8,28 +8,42 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * 
      */
     public function up(): void
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('county')->nullable();
-            $table->string('state')->nullable();
-            $table->string('city')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->string('building')->nullable();
-            $table->string('apartment')->nullable();
+            $table->string('address')->nullable();
+            $table->string('building_name')->nullable();
+            $table->string('apartment_number')->nullable();
+            $table->string('house_number')->nullable();
             $table->string('floor')->nullable();
             $table->string('street')->nullable();
             $table->string('block')->nullable();
             $table->string('way')->nullable();
             $table->string('phone')->nullable();
-            $table->boolean('is_house')->default(false);
-            $table->boolean('is_apartment')->default(false);
+            $table->boolean('is_house')->nullable();
+            $table->boolean('is_apartment')->nullable();
+            $table->boolean('is_default')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
+
+    // apartment
+    // address
+    // building name
+    // apartment number
+    // street
+    // block
+    // way
+    // number
+    // default
+
+    // house
+    // house number
+
 
     /**
      * Reverse the migrations.

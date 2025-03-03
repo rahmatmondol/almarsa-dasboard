@@ -159,34 +159,61 @@
                                 <h3 class="text-lg font-semibold text-gray-900">Shipping Address</h3>
                             </div>
                             <div class="space-y-3 text-sm">
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">Name:</span>
-                                    <span class="font-medium text-gray-900">{{ $order->shipping_first_name }}
-                                        {{ $order->shipping_last_name }}</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">Address:</span>
-                                    <span class="font-medium text-gray-900">{{ $order->shipping_address }}</span>
-                                </div>
-                                @if ($order->shipping_address2)
+                                @if ($order->address?->building_name)
                                     <div class="flex items-center">
-                                        <span class="text-gray-500 w-24">Address 2:</span>
-                                        <span class="font-medium text-gray-900">{{ $order->shipping_address2 }}</span>
+                                        <span class="text-gray-500 w-24">Building Name:</span>
+                                        <span class="font-medium text-gray-900">{{ $order->address->building_name }}</span>
                                     </div>
                                 @endif
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">City:</span>
-                                    <span class="font-medium text-gray-900">{{ $order->shipping_city }}</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">Postal Code:</span>
-                                    <span class="font-medium text-gray-900">{{ $order->shipping_postal_code }}</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">Country:</span>
-                                    <span
-                                        class="font-medium text-gray-900 uppercase">{{ $order->shipping_country }}</span>
-                                </div>
+
+                                @if ($order->address?->apartment_number)
+                                    <div class="flex items-center">
+                                        <span class="text-gray-500 w-24">Apartment Number:</span>
+                                        <span class="font-medium text-gray-900">{{ $order->address->apartment_number }}</span>
+                                    </div>
+                                @endif
+
+                                @if ($order->address?->house_number)
+                                    <div class="flex items-center">
+                                        <span class="text-gray-500 w-24">House Number:</span>
+                                        <span class="font-medium text-gray-900">{{ $order->address->house_number }}</span>
+                                    </div>
+                                @endif
+
+                                @if ($order->address?->street)
+                                    <div class="flex items-center">
+                                        <span class="text-gray-500 w-24">Street:</span>
+                                        <span class="font-medium text-gray-900">{{ $order->address->street }}</span>
+                                    </div>
+                                @endif
+
+                                @if ($order->address?->block)
+                                    <div class="flex items-center">
+                                        <span class="text-gray-500 w-24">Block:</span>
+                                        <span class="font-medium text-gray-900">{{ $order->address->block }}</span>
+                                    </div>
+                                @endif
+
+                                @if ($order->address?->way)
+                                    <div class="flex items-center">
+                                        <span class="text-gray-500 w-24">Way:</span>
+                                        <span class="font-medium text-gray-900">{{ $order->address->way }}</span>
+                                    </div>
+                                @endif
+
+                                @if ($order->address?->city)
+                                    <div class="flex items-center">
+                                        <span class="text-gray-500 w-24">City:</span>
+                                        <span class="font-medium text-gray-900">{{ $order->address->city }}</span>
+                                    </div>
+                                @endif
+
+                                @if ($order->address?->phone)
+                                    <div class="flex items-center">
+                                        <span class="text-gray-500 w-24">Phone:</span>
+                                        <span class="font-medium text-gray-900">{{ $order->address->phone }}</span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -215,28 +242,6 @@
                                 <div class="flex items-center">
                                     <span class="text-gray-500 w-24">Phone:</span>
                                     <span class="font-medium text-gray-900">{{ $user->phone }}</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">Address:</span>
-                                    <span class="font-medium text-gray-900">{{ $user->address }}</span>
-                                </div>
-                                @if ($user->address2)
-                                    <div class="flex items-center">
-                                        <span class="text-gray-500 w-24">Address 2:</span>
-                                        <span class="font-medium text-gray-900">{{ $user->address2 }}</span>
-                                    </div>
-                                @endif
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">City:</span>
-                                    <span class="font-medium text-gray-900">{{ $user->city }}</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">Postal Code:</span>
-                                    <span class="font-medium text-gray-900">{{ $user->postal_code }}</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-gray-500 w-24">Country:</span>
-                                    <span class="font-medium text-gray-900 uppercase">{{ $user->country }}</span>
                                 </div>
                             </div>
                         </div>

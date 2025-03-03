@@ -68,6 +68,7 @@ Route::group([
 
     // address routes
     Route::get('get-addresses', [AddressController::class, 'index'])->name('addresses.index');
+    Route::get('get-address/{id}', [AddressController::class, 'show'])->name('addresses.show');
     Route::post('add-address', [AddressController::class, 'store'])->name('addresses.store');
     Route::post('update-address/{id}', [AddressController::class, 'update'])->name('addresses.store');
     Route::delete('delete-address/{id}', [AddressController::class, 'destroy'])->name('addresses.store');

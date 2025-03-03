@@ -9,12 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Address extends Model
 {
     protected $fillable = [
-        'county',
-        'state',
-        'city',
-        'postal_code',
-        'building',
-        'apartment',
+        'address',
+        'building_name',
+        'apartment_number',
+        'house_number',
         'floor',
         'street',
         'block',
@@ -22,6 +20,7 @@ class Address extends Model
         'phone',
         'is_house',
         'is_apartment',
+        'is_default',
         'user_id',
     ];
 

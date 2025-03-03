@@ -48,19 +48,31 @@
                 <div>
                     <h2 style="margin: 0 0 0.5rem 0; font-size: 0.875rem; font-weight: 600; color: #111827;">Shipping To
                     </h2>
-                    <div style="color: #4b5563; font-size: 0.75rem;">
-                        <p style="margin: 0 0 0.25rem 0; font-weight: 500;">{{ $order->shipping_first_name }}
-                            {{ $order->shipping_last_name }}</p>
-                        <div style="margin-bottom: 0.25rem;">
-                            <p style="margin: 0;">{{ $order->shipping_address }}</p>
-                            @if ($order->shipping_address2)
-                                <p style="margin: 0;">{{ $order->shipping_address2 }}</p>
+                    @if ($order->address)
+                        <div style="color: #4b5563; font-size: 0.75rem;">
+                            @if ($order->address->building_name)
+                                <p style="margin: 0 0 0.25rem 0; font-weight: 500;">Building Name:
+                                    {{ $order->address->building_name }}</p>
                             @endif
-                            <p style="margin: 0;">{{ $order->shipping_city }}, {{ $order->shipping_postal_code }}</p>
-                            <p style="margin: 0;">{{ strtoupper($order->shipping_country) }}</p>
+                            @if ($order->address->apartment_number)
+                                <p style="margin: 0;">Apartment Number: {{ $order->address->apartment_number }}</p>
+                            @endif
+                            @if ($order->address->house_number)
+                                <p style="margin: 0;">House Number: {{ $order->address->house_number }}</p>
+                            @endif
+                            @if ($order->address->street)
+                                <p style="margin: 0;">Street: {{ $order->address->street }}</p>
+                            @endif
+                            @if ($order->address->block)
+                                <p style="margin: 0;">Block: {{ $order->address->block }}</p>
+                            @endif
+                            @if ($order->address->way)
+                                <p style="margin: 0;">Way: {{ $order->address->way }}</p>
+                            @endif
+                            <p style="margin: 0;">Phone: {{ $order->address->phone }}</p>
                         </div>
-                        <p style="margin: 0;">{{ $order->shipping_phone }}</p>
-                    </div>
+                    @endif
+
                 </div>
                 <div>
                     <h2 style="margin: 0 0 0.5rem 0; font-size: 0.875rem; font-weight: 600; color: #111827;">Invoice

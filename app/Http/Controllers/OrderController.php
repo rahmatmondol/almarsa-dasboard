@@ -50,7 +50,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order->load('items', 'user');
+        $order->load('items', 'user','address');
         $user = $order->user;
         return view('orders.show', compact('order', 'user'));
     }
@@ -70,6 +70,9 @@ class OrderController extends Controller
             'read_at' => false,
             'data' => [
                 'message' => 'Your order has been updated to ' . $order->status,
+                'order_id' => $order->id,
+                'status' => $order->status,
+                'type' => 'order',
             ],
             'title' => 'Order updated',
         ]);
@@ -80,7 +83,7 @@ class OrderController extends Controller
     // make order dtails to pdf
     public function pdf(Order $order)
     {
-        $order->load('items', 'user');
+        $order->load('items', 'user', 'address');
 
         return view('orders.invoice', compact('order'));
     }
