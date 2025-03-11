@@ -232,16 +232,16 @@
                             <div class="space-y-3 text-sm">
                                 <div class="flex items-center">
                                     <span class="text-gray-500 w-24">Name:</span>
-                                    <span class="font-medium text-gray-900">{{ $user->first_name }}
-                                        {{ $user->last_name }}</span>
+                                    <span class="font-medium text-gray-900">{{ $user->first_name ?? '' }}
+                                        {{ $user->last_name ?? 'N/A' }}</span>
                                 </div>
                                 <div class="flex items-center">
                                     <span class="text-gray-500 w-24">Email:</span>
-                                    <span class="font-medium text-gray-900">{{ $user->email }}</span>
+                                    <span class="font-medium text-gray-900">{{ $user->email ?? 'N/A' }}</span>
                                 </div>
                                 <div class="flex items-center">
                                     <span class="text-gray-500 w-24">Phone:</span>
-                                    <span class="font-medium text-gray-900">{{ $user->phone }}</span>
+                                    <span class="font-medium text-gray-900">{{ $user->phone ?? 'N/A' }}</span>
                                 </div>
                             </div>
                         </div>

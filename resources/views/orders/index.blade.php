@@ -109,7 +109,7 @@
                                             <td class="table-td ">
                                                 {{ $order->created_at->diffForHumans() }}
                                             </td>
-                                            <td class="table-td ">{{ $order->user->name }}</td>
+                                            <td class="table-td ">{{ $order->user->name ?? $order->user->email ?? 'N/A' }}</td>
                                             <td class="table-td ">
                                                 @if ($order->status == 'processing')
                                                     <span
