@@ -11,12 +11,16 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardControlller;
+use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\Notification;
 use App\Http\Controllers\ShopController;
 
 Route::get('/', function () {
     return view('auth.login');
 });
+
+Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
