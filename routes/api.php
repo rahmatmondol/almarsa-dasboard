@@ -20,6 +20,7 @@ Route::group([
 ], function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::post('register-google', [AuthController::class, 'loginOrRegisterWithGoogle'])->name('register-google');
     Route::post('forget-password', [AuthController::class, 'forgotPassword'])->name('forget-password');
     Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
 });

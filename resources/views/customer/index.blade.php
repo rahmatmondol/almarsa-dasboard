@@ -96,6 +96,15 @@
                                                         <iconify-icon icon="heroicons:eye"></iconify-icon>
                                                     </a>
                                                 </div>
+                                                <form action="{{ route('customer.destroy', $user->id) }}"
+                                                    method="POST" class="inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="action-btn delete-btn"
+                                                        onclick="return confirm('Are you sure? You want to delete this User')">
+                                                        <iconify-icon icon="heroicons:trash"></iconify-icon>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach

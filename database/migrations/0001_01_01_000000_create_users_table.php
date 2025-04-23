@@ -22,10 +22,11 @@ return new class extends Migration
             $table->boolean('sent_offers')->default(true);
             $table->boolean('newsletter')->default(true);
             $table->boolean('notifications')->default(true);
+            $table->string('google_id')->nullable();
 
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

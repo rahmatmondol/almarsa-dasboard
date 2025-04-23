@@ -328,6 +328,66 @@ class AuthController extends Controller
         }
     }
 
+    // register or login user with google
+    public function loginOrRegisterWithGoogle(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'google_id' => 'required|string',
+            'first_name' => 'string',
+            'last_name' => 'string',
+            'image' => 'required|string',
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if ($user) {
+            // If the user exists and google_id doesn't match, update it
+            if ($user->google_id !== $validated['google_id']) {
+                $user->google_id = $validated['google_id'];
+                $user->name = $validated['name'];
+                $user->image = $validated['image'];
+                $user->first_name = $validated['first_name'] ?? $user->first_name;
+                $user->last_name = $validated['last_name'] ?? $user->last_name;
+                $user->save();
+            }
+        } else {
+            // Create new user
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'google_id' => $validated['google_id'],
+                'image' => $validated['image'],
+                'first_name' => $validated['first_name'] ?? '',
+                'last_name' => $validated['last_name'] ?? '',
+            ]);
+        }
+
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+
+        $token = JWTAuth::fromUser($user);
+
+        $wishlists_count = $user->wishlist ? $user->wishlist->items->count() : 0;
+        $cart_count = $user->cart ? $user->cart->items->count() : 0;
+        $user = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'image' => $user->image,
+            'phone' => $user->phone,
+            'gender' => $user->gender,
+            'sent_offers' => $user->sent_offers,
+            'newletter' => $user->newletter,
+            'notifications' => $user->notifications
+
+        ];
+        return response()->json(compact('token', 'user', 'wishlists_count', 'cart_count'));
+    }
     // destroy user
     public function destroy(User $user)
     {

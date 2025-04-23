@@ -14,10 +14,10 @@ class DashboardControlller extends Controller
         $totalOrders = Order::count();
         $orderGrowth = Order::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
         $totalCustomers = User::count();
-        $customerGrowth = User::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
+        $customerGrowth = User::role('customer')->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
         $totalCategories = Category::count();
         $recentOrders = Order::latest()->take(5)->get();
-        $recentCustomers = User::latest()->take(5)->withCount('orders')->get();
+        $recentCustomers = User::role('customer')->latest()->take(5)->withCount('orders')->get();
         return view('dashboard', compact('totalOrders', 'orderGrowth', 'totalCustomers', 'customerGrowth', 'totalCategories', 'recentOrders', 'recentCustomers'));
     }
 }

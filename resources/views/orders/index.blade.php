@@ -109,7 +109,8 @@
                                             <td class="table-td ">
                                                 {{ $order->created_at->diffForHumans() }}
                                             </td>
-                                            <td class="table-td ">{{ $order->user->name ?? $order->user->email ?? 'N/A' }}</td>
+                                            <td class="table-td ">
+                                                {{ $order->user->name ?? ($order->user->email ?? 'N/A') }}</td>
                                             <td class="table-td ">
                                                 @if ($order->status == 'processing')
                                                     <span
@@ -156,6 +157,15 @@
                                                         <iconify-icon icon="heroicons:document"></iconify-icon>
                                                     </a>
 
+                                                    <form action="{{ route('order.destroy', $order->id) }}"
+                                                        method="POST" class="inline-block">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="action-btn delete-btn"
+                                                            onclick="return confirm('Are you sure? You want to delete this order')">
+                                                            <iconify-icon icon="heroicons:trash"></iconify-icon>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

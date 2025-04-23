@@ -94,6 +94,6 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
-        return redirect()->route('order.index');
+        return redirect()->route('order.list')->with('success', 'Order deleted successfully');
     }
 }

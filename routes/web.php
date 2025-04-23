@@ -46,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/show/{id}', [CustomerController::class, 'show'])->name('customer.show');
         Route::get('/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
         Route::post('/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
-        Route::delete('/destroy/{id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
+        Route::delete('/destroy/{user}', [CustomerController::class, 'destroy'])->name('customer.destroy');
     });
 
     // categories routes

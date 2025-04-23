@@ -38,12 +38,34 @@
                 <!-- BEGIN: Header -->
                 @include('layouts.partials.header')
                 <!-- END: Header -->
-
+                @if (session('success'))
+                    <script>
+                        window.addEventListener('DOMContentLoaded', () => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '{{ session('success') }}',
+                            });
+                        });
+                    </script>
+                @endif
+                @if (session('error'))
+                    <script>
+                        window.addEventListener('DOMContentLoaded', () => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '{{ session('error') }}',
+                            });
+                        });
+                    </script>
+                @endif
                 <div class="content-wrapper transition-all duration-150 ltr:ml-[248px] rtl:mr-[248px]"
                     id="content_wrapper">
                     <div class="page-content">
                         <div class="transition-all duration-150 container-fluid" id="page_layout">
                             <div id="content_layout">
+
                                 {{ $slot }}
                             </div>
                         </div>
@@ -69,6 +91,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>

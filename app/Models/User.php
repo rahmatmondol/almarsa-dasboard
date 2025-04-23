@@ -34,6 +34,7 @@ class User extends Authenticatable implements JWTSubject
         'notifications',
         'image',
         'gender',
+        'google_id',
     ];
 
     /**
